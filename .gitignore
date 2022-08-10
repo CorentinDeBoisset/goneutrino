@@ -1,2 +1,3 @@
 bin/*
 .vscode
+pkg/server/static/bindata.go

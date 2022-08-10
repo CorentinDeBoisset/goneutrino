@@ -30,6 +30,10 @@ func SetLogLevel(level int) {
 	logLevel = level
 }
 
+func GetLogLevel() int {
+	return logLevel
+}
+
 func SetLogOutput(w io.Writer) {
 	log.SetOutput(w)
 

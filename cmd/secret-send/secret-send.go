@@ -2,8 +2,10 @@ package main
 
 import (
 	"fmt"
+	"os"
 
 	"github.com/corentindeboisset/secert-send/pkg/logger"
+	"github.com/corentindeboisset/secert-send/pkg/server"
 	"github.com/spf13/cobra"
 )
 
@@ -13,7 +15,8 @@ var (
 
 	rootCmd *cobra.Command
 
-	confPath string
+	confPath  string
+	debugMode bool
 )
 
 func init() {
@@ -47,20 +50,28 @@ func init() {
 		Run: func(cmd *cobra.Command, args []string) {
 			logger.InfoLog("Starting the server")
 
-			// if err := watchRegistry(confPath); err != nil {
-			// 	if verbosity >= 2 {
-			// 		fmt.Printf("\n\nAn error occured when executing the command:\n%+v\n", err)
-			// 	} else {
-			// 		fmt.Printf("\n\nAn error occured when executing the command:\n%v\n", err)
-			// 	}
-			// 	os.Exit(1)
-			// }
+			serverConfig, err := server.LoadConfig(confPath)
+			if err != nil {
+				logger.ErrorLog("The configuration could not be parsed: %v\n", err)
+				os.Exit(1)
+				return
+			}
+
+			if err := server.StartServer(serverConfig, debugMode); err != nil {
+				if logger.GetLogLevel() >= 3 {
+					fmt.Printf("\n\nAn error occured when executing the command:\n%+v\n", err)
+				} else {
+					fmt.Printf("\n\nAn error occured when executing the command:\n%v\n", err)
+				}
+				os.Exit(1)
+			}
 		},
 	}
 	runServerCmd.Flags().StringVarP(&confPath, "conf", "c", "", "Configuration file")
 	if err := runServerCmd.MarkFlagRequired("conf"); err != nil {
 		panic(fmt.Sprintf("An error occured when configuring the CLI: %v", err))
 	}
+	runServerCmd.Flags().BoolVarP(&debugMode, "debug", "d", false, "Debug mode")
 
 	rootCmd.AddCommand(runServerCmd)
 }
