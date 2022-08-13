@@ -6,9 +6,9 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/corentindeboisset/secert-send/pkg/logger"
-	"github.com/corentindeboisset/secert-send/pkg/server/apiv1"
-	"github.com/corentindeboisset/secert-send/pkg/server/static"
+	"github.com/corentindeboisset/secret-send/pkg/logger"
+	"github.com/corentindeboisset/secret-send/pkg/server/apiv1"
+	"github.com/corentindeboisset/secret-send/web"
 	"github.com/gin-gonic/gin"
 )
 
@@ -41,11 +41,11 @@ func StartServer(serverConfig *Config, debugMode bool) error {
 		router.Use(gin.LoggerWithConfig(logConfig))
 	}
 
-	router.StaticFS("/static", static.AssetFile())
+	router.StaticFS("/static", http.FS(web.StaticFiles))
 
 	// ./ automatically serves ./index.html
-	router.StaticFileFS("/", "./", static.AssetFile())
-	router.StaticFileFS("/favicon.ico", "./favicon.ico", static.AssetFile())
+	router.StaticFileFS("/", "./", http.FS(web.RootFiles))
+	router.StaticFileFS("/favicon.ico", "./favicon.ico", http.FS(web.RootFiles))
 
 	// Setup the apiv1 group of routes
 	if err := apiv1.DecorateRouter(router); err != nil {

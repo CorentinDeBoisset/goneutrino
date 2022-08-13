@@ -1,4 +1,4 @@
-module github.com/corentindeboisset/secert-send
+module github.com/corentindeboisset/secret-send
 
 go 1.18
 

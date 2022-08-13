@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/corentindeboisset/secert-send/pkg/logger"
-	"github.com/corentindeboisset/secert-send/pkg/server"
+	"github.com/corentindeboisset/secret-send/pkg/logger"
+	"github.com/corentindeboisset/secret-send/pkg/server"
 	"github.com/spf13/cobra"
 )
 
