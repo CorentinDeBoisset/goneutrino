@@ -51,6 +51,7 @@
         />
       </g>
     </svg>
+    <div>{{ message }}</div>
   </div>
 </template>
 
@@ -61,6 +62,7 @@ export default defineComponent({
   name: "SplashLogo",
   props: {
     glow: Boolean,
+    message: String,
   },
 });
 </script>

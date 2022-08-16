@@ -1,17 +1,20 @@
 <template>
   <div>
-    <img alt="Vue logo" src="./assets/logo.png" />
-    <HelloWorld msg="Welcome to Your Vue.js + TypeScript App" />
+    <LocaleChanger />
     <transition name="splash-transition">
-      <SplashLogo v-if="showSplash" :glow="glowSplash" />
+      <SplashLogo
+        v-if="showSplash"
+        :glow="glowSplash"
+        :message="$t('splash_message')"
+      />
     </transition>
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import HelloWorld from "./components/HelloWorld.vue";
 import SplashLogo from "./components/SplashLogo.vue";
+import LocaleChanger from "./components/LocaleChanger.vue";
 
 export default defineComponent({
   name: "App",
@@ -31,8 +34,8 @@ export default defineComponent({
     }, 3200);
   },
   components: {
-    HelloWorld,
     SplashLogo,
+    LocaleChanger,
   },
 });
 </script>
