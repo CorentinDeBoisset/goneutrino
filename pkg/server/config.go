@@ -35,18 +35,18 @@ func LoadConfig(configPath string) (*Config, error) {
 
 	// if serverConfig.TlsBehindProxy {
 	if serverConfig.TrustedProxies == nil {
-		return nil, fmt.Errorf("Invalid value for config property \"trusted_proxies\"")
+		return nil, fmt.Errorf("invalid value for config property \"trusted_proxies\"")
 	}
 	// 	if len(serverConfig.ReverseProxyCa) == 0 {
-	// 		return nil, errors.New("Invalid value for config property \"tls_ca\"")
+	// 		return nil, errors.New("invalid value for config property \"tls_ca\"")
 	// 	}
 	// }
 
 	// if len(serverConfig.TlsKey) == 0 {
-	// 	return nil, errors.New("Invalid value for config property \"tls_key\"")
+	// 	return nil, errors.New("invalid value for config property \"tls_key\"")
 	// }
 	// if len(serverConfig.TlsCert) == 0 {
-	// 	return nil, errors.New("Invalid value for config property \"tls_cert\"")
+	// 	return nil, errors.New("invalid value for config property \"tls_cert\"")
 	// }
 
 	return serverConfig, nil
