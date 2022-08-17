@@ -9,7 +9,7 @@ module.exports = defineConfig({
     index: {
       entry: "src/main.ts",
       template: "public/index.html",
-      title: "Secret-send - Send your secrets securely to third-parties",
+      title: "Neutrino - Send your secrets securely to third-parties",
     },
   },
 

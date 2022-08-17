@@ -1,4 +1,4 @@
-module github.com/corentindeboisset/secret-send
+module github.com/corentindeboisset/neutrino
 
 go 1.18
 

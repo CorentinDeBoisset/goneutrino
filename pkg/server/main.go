@@ -6,9 +6,9 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/corentindeboisset/secret-send/pkg/logger"
-	"github.com/corentindeboisset/secret-send/pkg/server/apiv1"
-	"github.com/corentindeboisset/secret-send/web"
+	"github.com/corentindeboisset/neutrino/pkg/logger"
+	"github.com/corentindeboisset/neutrino/pkg/server/apiv1"
+	"github.com/corentindeboisset/neutrino/web"
 	"github.com/gin-gonic/gin"
 )
 

@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/corentindeboisset/secret-send/pkg/logger"
-	"github.com/corentindeboisset/secret-send/pkg/server"
+	"github.com/corentindeboisset/neutrino/pkg/logger"
+	"github.com/corentindeboisset/neutrino/pkg/server"
 	"github.com/spf13/cobra"
 )
 
@@ -22,7 +22,7 @@ var (
 func init() {
 	rootCmd = &cobra.Command{
 		Use:   ExecutableName,
-		Short: "Secret-send is a web server to securely send secrets to third-parties",
+		Short: "Neutrino is a web server to securely send secrets to third-parties",
 		PersistentPreRunE: func(cmd *cobra.Command, args []string) error {
 			verbosity, err := cmd.Flags().GetCount("verbose")
 			if err != nil {

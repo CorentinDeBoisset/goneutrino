@@ -1,17 +1,41 @@
 <template>
-  <form class="locale-changer" @submit.prevent="">
-    <button type="button" @click="toggleSelector">
-      {{ localNames[$i18n.locale] }} ▾
+  <form
+    class="locale-changer"
+    @submit.prevent=""
+    @mouseover="hoverList = true"
+    @mouseleave="hoverList = false"
+  >
+    <button
+      class="locale-changer__title"
+      type="button"
+      aria-controls="locale-dropdown"
+      aria-expanded="false"
+      @focus="focusList = true"
+      @blur="focusList = false"
+    >
+      <tw-emoji :str="localNames[$i18n.locale].emoji" />{{
+        localNames[$i18n.locale].name
+      }}
+      ▾
     </button>
-    <ul v-show="openSelector">
-      <li
-        v-for="locale in $i18n.availableLocales"
-        :key="`locale-${locale}`"
-        @click="pickLocale(locale)"
+    <transition name="dropdown">
+      <ul
+        v-show="focusList || hoverList"
+        class="locale-changer__list"
+        id="locale-dropdown"
       >
-        {{ localNames[locale] }}
-      </li>
-    </ul>
+        <li
+          v-for="locale in $i18n.availableLocales"
+          class="locale-changer__item"
+          :key="`locale-${locale}`"
+          @click="pickLocale(locale)"
+        >
+          <tw-emoji :str="localNames[locale].emoji" />{{
+            localNames[locale].name
+          }}
+        </li>
+      </ul>
+    </transition>
   </form>
 </template>
 
@@ -23,28 +47,60 @@ export default defineComponent({
   data() {
     return {
       localNames: {
-        en: "🇬🇧 - English",
-        fr: "🇫🇷 - Français",
+        en: {
+          emoji: "🇬🇧",
+          name: "En",
+        },
+        fr: {
+          emoji: "🇫🇷",
+          name: "Fr",
+        },
       },
-      openSelector: false,
+      focusList: false,
+      hoverList: false,
     };
   },
   methods: {
-    toggleSelector() {
-      console.log(this.openSelector);
-      this.openSelector = !this.openSelector;
-      console.log(this.openSelector);
-    },
-    pickLocale(locale) {
+    pickLocale(locale: string) {
       this.$i18n.locale = locale;
-      this.openSelector = false;
+      this.focusList = false;
+      this.hoverList = false;
+      localStorage.setItem("locale", locale);
     },
   },
 });
 </script>
 
 <style scoped>
-.locale-changer select {
-  padding: 0.3rem 1rem;
+.locale-changer {
+  position: relative;
+}
+
+.locale-changer__list {
+  position: absolute;
+  top: 100%;
+  list-style: none;
+  border: solid 1px #c1c1c1;
+  border-radius: 0 0 3px 3px;
+  padding: 0;
+  margin: 0.1rem;
+}
+
+.locale-changer__item {
+  padding: 0.4rem 0.5rem;
+  background: rgb(237, 237, 244);
+  cursor: pointer;
+}
+.locale-changer__item:hover {
+  background: rgb(219, 219, 226);
+}
+
+.dropdown-enter-from,
+.dropdown-leave-to {
+  opacity: 0;
+}
+.dropdown-enter-active,
+.dropdown-leave-active {
+  transition: opacity 100ms ease-in;
 }
 </style>

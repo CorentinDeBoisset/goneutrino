@@ -1,0 +1,13 @@
+html,
+button,
+input,
+select,
+textarea {
+  font-family: "aktiv-grotesk", sans-serif;
+  color: #333447;
+}
+
+html,
+.fullheight {
+    height: 100%;
+}

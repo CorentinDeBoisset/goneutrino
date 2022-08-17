@@ -1,4 +1,4 @@
-# secret-send-frontend
+# neutrino-frontend
 
 ## Project setup
 ```

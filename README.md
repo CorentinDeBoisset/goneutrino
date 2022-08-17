@@ -1,4 +1,4 @@
-# Secret-send
+# Neutrino
 
 📮 Send your secrets securely to third-parties, using client-to-client encryption.
 
@@ -9,7 +9,7 @@ This project is heavily inspired from [Datash](https://github.com/datash/datash)
 Simply run:
 
     make
-    ./bin/secret-send serve -c config.yml
+    ./bin/neutrino serve -c config.yml
 
 Then go to [localhost:8080]
 
