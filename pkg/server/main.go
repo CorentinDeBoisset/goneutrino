@@ -21,6 +21,8 @@ func StartServer(serverConfig *Config, debugMode bool) error {
 	router := gin.New()
 	router.Use(gin.Recovery())
 
+	router.Use(clientMgmtMiddleware())
+
 	if logger.GetLogLevel() >= 1 {
 		var logConfig gin.LoggerConfig
 		logConfig.Formatter = func(param gin.LogFormatterParams) string {
