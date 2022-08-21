@@ -13,14 +13,12 @@ import (
 	"golang.org/x/crypto/openpgp"
 )
 
-// var publicKeyStore map[int]PublicKey
-
 type RegisterBody struct {
 	Name      string `json:"name" binding:"required"`
 	PublicKey string `json:"publicKey" binding:"required"`
 }
 
-func RegisterClientRoute(c *gin.Context) {
+func registerClientRoute(c *gin.Context) {
 	// Receive the public key, the nickname and return a unique numeric id
 	// Also set a session cookie, that will be used to re-identify the client
 	var body RegisterBody
@@ -53,10 +51,11 @@ func RegisterClientRoute(c *gin.Context) {
 
 	c.SetCookie("neutrino-session", sessionId, 24*30*3600, "/", "localhost", true, true)
 
-	c.JSON(200, gin.H{"message": "pong"})
+	// TODO: send the expiration date of the session to the JS
+	c.JSON(200, gin.H{"message": "Ok"})
 }
 
-func ValidateStatusRoute(c *gin.Context) {
+func validateStatusRoute(c *gin.Context) {
 	client, found := c.Get("client")
 	if !found {
 		c.JSON(http.StatusUnauthorized, gin.H{"message": "There is no current session for the user"})
@@ -76,36 +75,53 @@ func ValidateStatusRoute(c *gin.Context) {
 		return
 	}
 
+	// TODO: send the expiration of the session to the JS
 	c.JSON(http.StatusOK, gin.H{"message": "The session is valid"})
 }
 
-func GetPublicKeyRoute(c *gin.Context) {
+func getPublicKeyRoute(c *gin.Context) {
+	rawClient, found := c.Get("client")
+	if !found {
+		c.JSON(http.StatusUnauthorized, gin.H{"message": "Unauthorized"})
+		return
+	}
+	client := rawClient.(clientmgr.ClientInstance)
+
 	clientId, err := strconv.Atoi(c.Query("id"))
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"message": "the supplied id is not a valid integer"})
+		c.JSON(http.StatusBadRequest, gin.H{"message": "the supplied value for `id` is not a valid integer"})
 		return
+	}
+	initiate, err := strconv.ParseBool(c.DefaultQuery("initiate", "false"))
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"message": "the supplied value for `initiate` is not a valid boolean"})
 	}
 
 	store := c.MustGet("client-store").(*clientmgr.ClientStore)
-	client, err := store.GetClientFromId(clientId)
+	peerClient, err := store.GetClientFromId(clientId)
 	if err != nil {
 		c.JSON(http.StatusNotFound, gin.H{"message": "the supplied id could not be associated with another client"})
 		return
 	}
 
-	if !client.IsOnline() {
+	if !peerClient.IsOnline() {
 		c.JSON(http.StatusNotFound, gin.H{"message": "A client with the given id was found, but is not online"})
 		return
 	}
 
-	pubKey, err := client.SerializePubKey()
+	pubKey, err := peerClient.SerializePubKey()
 	if err != nil {
 		logger.ErrorLog("failed to serialize the public key of a client (id=%d): %s", clientId, err.Error())
 		c.JSON(http.StatusInternalServerError, gin.H{"message": "an error occured"})
 		return
 	}
 
-	// TODO: send a SSE to the other client if initiate=true
+	if initiate {
+		// This call may be blocking, not sure if it should be put in a specific goroutine...
+		// In that case, there may be too many goroutines started
+		// Alternatively, we could use a buffered channel and a non-blocking send, and handle the error if many other clients are trying to connect to the peer
+		peerClient.NewPeers <- client.Id
+	}
 
 	c.JSON(http.StatusOK, gin.H{"publicKey": pubKey})
 }

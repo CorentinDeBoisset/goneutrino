@@ -2,24 +2,20 @@ package apiv1
 
 import "github.com/gin-gonic/gin"
 
-func SendStringRoute(c *gin.Context) {
-	// Store the sent encrypted string in memory, with a unique id
-	// Send an SSE to the recipient, with the unique id
+func sendStringRoute(c *gin.Context) {
+	// We can store the string in memory, it’s ok
 	c.JSON(200, gin.H{"message": "pong"})
 }
 
-func GetStringRoute(c *gin.Context) {
-	// Use the given unique id
-	// Send the client the encrypted string
+func getStringRoute(c *gin.Context) {
 	c.JSON(200, gin.H{"message": "pong"})
 }
 
-func SendFileRoute(c *gin.Context) {
-	// Same as for strings, but using a buffer between the sender and the recipient
+func sendFileRoute(c *gin.Context) {
+	// Find a way to send the file reader to the getFileRoute from the other client, and pipeline the data using c.DataFromReader()
 	c.JSON(200, gin.H{"message": "pong"})
 }
 
-func GetFileRoute(c *gin.Context) {
-	// Same as for strings, but using a buffer between the sender and the recipient
+func getFileRoute(c *gin.Context) {
 	c.JSON(200, gin.H{"message": "pong"})
 }

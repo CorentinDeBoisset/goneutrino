@@ -4,11 +4,18 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func DecorateRouter(r *gin.Engine) error {
+func DecorateRouter(r *gin.Engine) {
 	groupV1 := r.Group("/api/v1")
 
-	groupV1.GET("/ping", PingRoute)
-	// groupV1.POST("/public-key", PostPublicKeyRoute)
+	groupV1.GET("/ping", pingRoute)
+	groupV1.POST("/register", registerClientRoute)
+	groupV1.GET("/validate-status", validateStatusRoute)
+	groupV1.GET("/public-key", getPublicKeyRoute)
 
-	return nil
+	groupV1.GET("/SSE", eventPusherRoute)
+
+	groupV1.POST("/secret/string", sendStringRoute)
+	groupV1.GET("/secret/string", getFileRoute)
+	groupV1.POST("/secret/file", sendFileRoute)
+	groupV1.GET("/secret/file", getFileRoute)
 }

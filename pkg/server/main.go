@@ -50,9 +50,7 @@ func StartServer(serverConfig *Config, debugMode bool) error {
 	router.StaticFileFS("/favicon.ico", "./favicon.ico", http.FS(web.RootFiles))
 
 	// Setup the apiv1 group of routes
-	if err := apiv1.DecorateRouter(router); err != nil {
-		return err
-	}
+	apiv1.DecorateRouter(router)
 	// Next versions of the API should be added here
 
 	// Setup the server, with or without TLS

@@ -26,4 +26,4 @@ ${BIN_DIR}/${EXECUTABLE}: ${GO_FILES}
 	CGO_ENABLED=0 go build -ldflags "-X main.ExecutableName=${EXECUTABLE} -X main.Version=${VERSION}" -o $@ ./cmd/neutrino
 
 ${BIN_DIR}/${EXECUTABLE}_prod: ${GO_FILES}
-	CGO_ENABLED=0 go build -tags prod -ldflags "-X main.ExecutableName=${EXECUTABLE} -X main.Version=${VERSION}" -o $@ ./cmd/neutrino
+	CGO_ENABLED=0 go build -tags prod -ldflags "-X main.ExecutableName=${EXECUTABLE} -X main.Version=${VERSION} -s -w" -o $@ ./cmd/neutrino

@@ -12,12 +12,27 @@ import (
 	"golang.org/x/crypto/openpgp/armor"
 )
 
+type TransferTypeEnum int
+
+const (
+	StringTransfer TransferTypeEnum = iota
+	FileTransfer
+)
+
+type Transfer struct {
+	From         int
+	TransferType TransferTypeEnum
+}
+
 type ClientInstance struct {
 	Id         int
 	Name       string
 	PublicKey  *openpgp.Entity
 	Expiration time.Time
 	Online     bool
+
+	NewPeers     chan int
+	NewTransfers chan Transfer
 }
 
 // TODO: store the public keys in a key-value store, such as Redis
@@ -103,7 +118,6 @@ func (store *ClientStore) NewClient(name string, pKey *openpgp.Entity, exp time.
 		Name:       name,
 		PublicKey:  pKey,
 		Expiration: exp,
-		// time.Now().Add(time.Hour * 24 * 30),
 	}
 
 	return sessionId.String(), nil
@@ -124,12 +138,16 @@ func (store *ClientStore) GetClient(sessionId string) (*ClientInstance, error) {
 	store.Mtx.RLock()
 	defer store.Mtx.RUnlock()
 
-	// TODO: check the expiration
-
-	if _, ok := store.Clients[sessionId]; !ok {
+	client, ok := store.Clients[sessionId]
+	if !ok {
 		return nil, fmt.Errorf("there are no public key for the given identifier (%s)", sessionId)
 	}
-	return store.Clients[sessionId], nil
+
+	if time.Now().After(client.Expiration) {
+		return nil, fmt.Errorf("the client with the given session identifier (%s) is expired", sessionId)
+	}
+
+	return client, nil
 }
 
 // GetPublicKey returns a serialized representation of the public key for the user with the given id
@@ -147,7 +165,9 @@ func (store *ClientStore) GetClientFromId(id int) (*ClientInstance, error) {
 		return nil, fmt.Errorf("no client could be found with id %d", id)
 	}
 
-	// TODO: Check the expiration
+	if time.Now().After(foundClient.Expiration) {
+		return nil, fmt.Errorf("the client with the given id (%d) is expired", id)
+	}
 
 	return foundClient, nil
 }
