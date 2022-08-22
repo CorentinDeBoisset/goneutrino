@@ -7,22 +7,11 @@ import (
 	"sync"
 	"time"
 
+	"github.com/corentindeboisset/neutrino/pkg/transfermgr"
 	"github.com/google/uuid"
 	"golang.org/x/crypto/openpgp"
 	"golang.org/x/crypto/openpgp/armor"
 )
-
-type TransferTypeEnum int
-
-const (
-	StringTransfer TransferTypeEnum = iota
-	FileTransfer
-)
-
-type Transfer struct {
-	From         int
-	TransferType TransferTypeEnum
-}
 
 type ClientInstance struct {
 	Id         int
@@ -32,7 +21,7 @@ type ClientInstance struct {
 	Online     bool
 
 	NewPeers     chan int
-	NewTransfers chan Transfer
+	NewTransfers chan *transfermgr.ContentTransfer
 }
 
 // TODO: store the public keys in a key-value store, such as Redis

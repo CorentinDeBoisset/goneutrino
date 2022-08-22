@@ -31,7 +31,7 @@ func eventPusherRoute(c *gin.Context) {
 		case peerId := <-clientInstance.NewPeers:
 			c.SSEvent("new-peer", gin.H{"peerId": peerId})
 		case transfer := <-clientInstance.NewTransfers:
-			c.SSEvent("new-transfer", gin.H{"peerId": transfer.From, "transferType": transfer.TransferType})
+			c.SSEvent("new-transfer", gin.H{"peerId": transfer.From, "Id": transfer.Id})
 		case <-timeout.C:
 		}
 

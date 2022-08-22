@@ -8,6 +8,7 @@ import (
 
 	"github.com/corentindeboisset/neutrino/pkg/logger"
 	"github.com/corentindeboisset/neutrino/pkg/server/apiv1"
+	"github.com/corentindeboisset/neutrino/pkg/transfermgr"
 	"github.com/corentindeboisset/neutrino/web"
 	"github.com/gin-gonic/gin"
 )
@@ -22,6 +23,7 @@ func StartServer(serverConfig *Config, debugMode bool) error {
 	router.Use(gin.Recovery())
 
 	router.Use(clientMgmtMiddleware())
+	router.Use(transfermgr.TransferMgmtMiddleware())
 
 	if logger.GetLogLevel() >= 1 {
 		var logConfig gin.LoggerConfig

@@ -52,7 +52,7 @@ func registerClientRoute(c *gin.Context) {
 	c.SetCookie("neutrino-session", sessionId, 24*30*3600, "/", "localhost", true, true)
 
 	// TODO: send the expiration date of the session to the JS
-	c.JSON(200, gin.H{"message": "Ok"})
+	c.JSON(http.StatusOK, gin.H{"message": "Ok"})
 }
 
 func validateStatusRoute(c *gin.Context) {
@@ -67,7 +67,7 @@ func validateStatusRoute(c *gin.Context) {
 		// The supplied public key, and the stored one do not match,
 		// even though the client has the right session cookie.
 		// Given the inconsistency we return an error and clear everything
-		store := c.MustGet("store").(*clientmgr.ClientStore)
+		store := c.MustGet("client-store").(*clientmgr.ClientStore)
 		_ = store.RemoveClient(c.GetString("client-uuid"))
 		c.SetCookie("neutrino-session", "", -1, "/", "localhost", true, true)
 
