@@ -7,10 +7,10 @@ import (
 	"strings"
 	"time"
 
+	"github.com/ProtonMail/go-crypto/openpgp"
 	"github.com/corentindeboisset/neutrino/pkg/clientmgr"
 	"github.com/corentindeboisset/neutrino/pkg/logger"
 	"github.com/gin-gonic/gin"
-	"golang.org/x/crypto/openpgp"
 )
 
 type RegisterBody struct {

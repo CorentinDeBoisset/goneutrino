@@ -7,10 +7,10 @@ import (
 	"sync"
 	"time"
 
+	"github.com/ProtonMail/go-crypto/openpgp"
+	"github.com/ProtonMail/go-crypto/openpgp/armor"
 	"github.com/corentindeboisset/neutrino/pkg/transfermgr"
 	"github.com/google/uuid"
-	"golang.org/x/crypto/openpgp"
-	"golang.org/x/crypto/openpgp/armor"
 )
 
 type ClientInstance struct {
@@ -72,14 +72,15 @@ func (store *ClientStore) NewClient(name string, pKey *openpgp.Entity, exp time.
 	store.Mtx.Lock()
 	defer store.Mtx.Unlock()
 
-	var sessionId uuid.UUID
+	var sessionId string
 	for {
-		sessionId, err := uuid.NewRandom()
+		candidate, err := uuid.NewRandom()
 		if err != nil {
 			return "", fmt.Errorf("failed to create a UUID for the new client: %w", err)
 		}
-		if _, ok := store.Clients[sessionId.String()]; !ok {
+		if _, ok := store.Clients[candidate.String()]; !ok {
 			// Stop the loop as soon as there is an unknown UUID
+			sessionId = candidate.String()
 			break
 		}
 	}
@@ -102,14 +103,14 @@ func (store *ClientStore) NewClient(name string, pKey *openpgp.Entity, exp time.
 		return "", fmt.Errorf("failed to find a unique numeric id for the client after 50 tries")
 	}
 
-	store.Clients[sessionId.String()] = &ClientInstance{
+	store.Clients[sessionId] = &ClientInstance{
 		Id:         newId,
 		Name:       name,
 		PublicKey:  pKey,
 		Expiration: exp,
 	}
 
-	return sessionId.String(), nil
+	return sessionId, nil
 }
 
 // RemoveClient deletes the client instance indexed on the given sessionId
