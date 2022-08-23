@@ -1,5 +1,5 @@
 <p align="center">
-    <img src="https://github.com/corentindeboisset/neutrino/raw/main/frontend-src/public/neutrino_logo_large.svg" alt="Logo of the neutrino application" />
+    <img src="https://github.com/corentindeboisset/neutrino/raw/main/frontend-src/public/neutrino_logo_large.svg" alt="Logo of the neutrino application" style="width: 8rem" />
 </p>
 
 # Neutrino
