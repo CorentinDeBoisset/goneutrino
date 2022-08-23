@@ -1,8 +1,12 @@
+<p align="center">
+    <img src="https://github.com/corentindeboisset/neutrino/raw/master/frontend-src/public/neutrino_logo_large.svg" alt="Logo of the neutrino application" />
+</p>
+
 # Neutrino
 
 📮 Send your secrets securely to third-parties, using client-to-client encryption.
 
-This project is heavily inspired from [Datash](https://github.com/datash/datash).
+This project has many of its features inspired from [Datash](https://github.com/datash/datash).
 
 ## ❯ Install
 
