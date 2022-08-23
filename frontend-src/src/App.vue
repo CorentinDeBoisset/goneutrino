@@ -1,11 +1,7 @@
 <template>
   <transition name="splash-transition">
-    <SplashLogo
-      class="fullheight"
-      v-if="splashStatus == 'loading'"
-      :glow="glowSplash"
-      :message="$t('splash_message')"
-    />
+    <SplashLogo class="fullheight" v-if="splashStatus == 'loading'" :glow="glowSplash"
+      :message="$t('splash_message')" />
     <NeutrinoPage class="fullheight" v-else-if="splashStatus == 'finished'" />
   </transition>
 </template>
@@ -15,6 +11,7 @@ import { defineComponent } from "vue";
 import SplashLogo from "./components/SplashLogo.vue";
 import NeutrinoPage from "./components/NeutrinoPage.vue";
 import { initKeys } from "./crypto";
+import { PublicKey, PrivateKey } from "openpgp";
 
 export default defineComponent({
   name: "App",
@@ -22,9 +19,10 @@ export default defineComponent({
     return {
       splashStatus: "init",
       glowSplash: false,
+      keyPair: { publicKey: null, privateKey: null } as { publicKey: PublicKey | null; privateKey: PrivateKey | null },
     };
   },
-  mounted() {
+  async mounted() {
     this.splashStatus = "loading";
     window.setTimeout(() => {
       this.glowSplash = true;
@@ -33,7 +31,7 @@ export default defineComponent({
       this.splashStatus = "finished";
     }, 3200);
 
-    initKeys();
+    this.keyPair = await initKeys();
   },
   created() {
     const locale = localStorage.getItem("locale");

@@ -1,4 +1,4 @@
-import { generateKey, readKey, readPrivateKey, PublicKey, PrivateKey } from 'openpgp';
+import { generateKey, readKey, readPrivateKey, PublicKey, PrivateKey } from "openpgp";
 
 export async function initKeys(): Promise<{ publicKey: PublicKey; privateKey: PrivateKey }> {
     const rawPrivateKey = localStorage.getItem("neutrino-private-key");
