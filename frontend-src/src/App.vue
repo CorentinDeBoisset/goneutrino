@@ -14,6 +14,7 @@
 import { defineComponent } from "vue";
 import SplashLogo from "./components/SplashLogo.vue";
 import NeutrinoPage from "./components/NeutrinoPage.vue";
+import { initKeys } from "./crypto";
 
 export default defineComponent({
   name: "App",
@@ -31,6 +32,8 @@ export default defineComponent({
     window.setTimeout(() => {
       this.splashStatus = "finished";
     }, 3200);
+
+    initKeys();
   },
   created() {
     const locale = localStorage.getItem("locale");
