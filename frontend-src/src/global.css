@@ -11,3 +11,40 @@ html,
 .fullheight {
     height: 100%;
 }
+
+html {
+  background: radial-gradient(farthest-corner at 70% 70%, #fcfaf2 0%,  #f2eedf 100%);
+}
+
+.btn {
+  background-color: #007172;
+  color: #FFF;
+  border: none;
+  padding: 0.4rem 1.5rem;
+  border-radius: 0.3rem;
+  cursor: pointer;
+  transition: background-color 0.1s ease-in-out;
+  box-shadow: 0.05rem 0.05rem 0.2rem rgba(0, 0, 0, 0.1);
+}
+
+.btn:hover {
+  background-color: #006466;
+}
+
+.btn:focus {
+  outline: solid 2px #007172;
+  outline-offset: 2px;
+}
+
+input {
+  outline: solid 2px transparent;
+  outline-offset: none;
+  padding: 0.4rem;
+  border-radius: 0.3rem;
+  border: solid 1px lightgrey;
+  box-shadow: 0.05rem 0.05rem 0.2rem rgba(0, 0, 0, 0.05);
+}
+input:focus {
+  outline: solid 1px #007172;
+  border: solid 1px #007172;
+}

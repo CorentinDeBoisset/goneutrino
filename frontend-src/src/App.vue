@@ -1,7 +1,11 @@
 <template>
   <transition name="splash-transition">
-    <SplashLogo class="fullheight" v-if="splashStatus == 'loading'" :glow="glowSplash"
-      :message="$t('splash_message')" />
+    <SplashLogo
+      class="fullheight"
+      v-if="splashStatus == 'loading'"
+      :glow="glowSplash"
+      :message="$t('splash_message')"
+    />
     <NeutrinoPage class="fullheight" v-else-if="splashStatus == 'finished'" />
   </transition>
 </template>
@@ -19,7 +23,10 @@ export default defineComponent({
     return {
       splashStatus: "init",
       glowSplash: false,
-      keyPair: { publicKey: null, privateKey: null } as { publicKey: PublicKey | null; privateKey: PrivateKey | null },
+      keyPair: { publicKey: null, privateKey: null } as {
+        publicKey: PublicKey | null;
+        privateKey: PrivateKey | null;
+      },
     };
   },
   async mounted() {
@@ -36,7 +43,9 @@ export default defineComponent({
   created() {
     const locale = localStorage.getItem("locale");
     if (locale != null && this.$i18n.availableLocales.indexOf(locale) !== -1) {
+      console.log(`Loaded the locale "${locale}" from localStorage`);
       this.$i18n.locale = locale;
+      return;
     } else {
       localStorage.removeItem("locale");
     }

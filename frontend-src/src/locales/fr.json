@@ -1,4 +1,9 @@
 {
   "splash_message": "Chargement...",
-  "message": "bonjour i18n !!"
+  "header-title": "NEUTRINO",
+  "header-subtitle": "Sécurisez le partage vos mots de passe et fichiers confidentiels",
+  "hello": "Bonjour,",
+  "pick-nickname": "Quel est votre nom ?",
+  "submit-nickname": "C'est parti !",
+  "nickname-placeholder": "Jackson"
 }

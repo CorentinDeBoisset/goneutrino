@@ -1,4 +1,9 @@
 {
   "splash_message": "Loading...",
-  "message": "hello i18n !!"
+  "header-title": "NEUTRINO",
+  "header-subtitle": "Share your passwords and confidential files securely",
+  "hello": "Hello,",
+  "pick-nickname": "What is your name?",
+  "submit-nickname": "Let's go!",
+  "nickname-placeholder": "Kevin McKevinface"
 }

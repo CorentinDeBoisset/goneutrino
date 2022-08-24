@@ -1,41 +1,38 @@
 <template>
-  <form
-    class="locale-changer"
-    @submit.prevent=""
-    @mouseover="hoverList = true"
-    @mouseleave="hoverList = false"
-  >
-    <button
-      class="locale-changer__title"
-      type="button"
-      aria-controls="locale-dropdown"
-      aria-expanded="false"
-      @focus="focusList = true"
-      @blur="focusList = false"
-    >
-      <tw-emoji :str="localNames[$i18n.locale].emoji" />{{
-        localNames[$i18n.locale].name
-      }}
-      ▾
-    </button>
-    <transition name="dropdown">
-      <ul
-        v-show="focusList || hoverList"
-        class="locale-changer__list"
-        id="locale-dropdown"
+  <form class="locale-changer" @submit.prevent="">
+    <div @mouseover="hoverList = true" @mouseleave="hoverList = false">
+      <button
+        class="locale-changer__title"
+        type="button"
+        aria-controls="locale-dropdown"
+        aria-expanded="false"
+        @focus="focusList = true"
+        @blur="focusList = false"
       >
-        <li
-          v-for="locale in $i18n.availableLocales"
-          class="locale-changer__item"
-          :key="`locale-${locale}`"
-          @click="pickLocale(locale)"
+        <tw-emoji :str="localNames[$i18n.locale].emoji" />{{
+          localNames[$i18n.locale].name
+        }}
+        ▾
+      </button>
+      <transition name="dropdown">
+        <ul
+          v-show="focusList || hoverList"
+          class="locale-changer__list"
+          id="locale-dropdown"
         >
-          <tw-emoji :str="localNames[locale].emoji" />{{
-            localNames[locale].name
-          }}
-        </li>
-      </ul>
-    </transition>
+          <li
+            v-for="locale in $i18n.availableLocales"
+            class="locale-changer__item"
+            :key="`locale-${locale}`"
+            @click="pickLocale(locale)"
+          >
+            <tw-emoji :str="localNames[locale].emoji" />{{
+              localNames[locale].name
+            }}
+          </li>
+        </ul>
+      </transition>
+    </div>
   </form>
 </template>
 
@@ -74,11 +71,13 @@ export default defineComponent({
 <style scoped>
 .locale-changer {
   position: relative;
+  display: flex;
+  justify-content: right;
 }
 
 .locale-changer__list {
   position: absolute;
-  top: 100%;
+  bottom: 100%;
   list-style: none;
   border: solid 1px #c1c1c1;
   border-radius: 0 0 3px 3px;

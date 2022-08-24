@@ -40,6 +40,7 @@ func TestNewStringTransfer(t *testing.T) {
 		t.Fatalf("The contents of the new transfer is not coherent with the submitted values")
 	}
 }
+
 func TestNewFileTransfer(t *testing.T) {
 	store := InitTransferStore()
 
