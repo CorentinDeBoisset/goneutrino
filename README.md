@@ -19,6 +19,32 @@ Then go to [localhost:8080]
 
 ## ❯ Contributing
 
+### ❯ Development setup
+
+You can first setup a configuration file for your backend with the following structure:
+
+```yaml
+# example.yml
+host: 127.0.0.1
+port: 8081
+trusted_proxies: [0.0.0.0/0]
+```
+
+Then you can build the backend:
+
+    make dev_build
+    ./bin/neutrino serve -c example.yml
+
+Finally, you can install and start the frontend web server:
+
+    cd frontend-src
+    npm Install
+    npm run serve
+
+The application is then available at [http://localhost:8080]
+
+### ❯ Linting and Tests
+
 If you want to open an MR, be sure to run the tests with:
 
     golangci-lint run
