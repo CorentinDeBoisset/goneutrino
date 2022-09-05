@@ -49,7 +49,7 @@ func StartServer(serverConfig *Config, debugMode bool) error {
 
 	// ./ automatically serves ./index.html
 	router.StaticFileFS("/", "./", http.FS(web.RootFiles))
-	router.StaticFileFS("/favicon.ico", "./favicon.ico", http.FS(web.RootFiles))
+	router.StaticFileFS("/favicon_plain.png", "./favicon_plain.png", http.FS(web.RootFiles))
 
 	// Setup the apiv1 group of routes
 	apiv1.DecorateRouter(router)

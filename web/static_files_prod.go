@@ -10,12 +10,13 @@ import (
 )
 
 //go:embed frontend-app/index.html
-//go:embed frontend-app/favicon.ico
+//go:embed frontend-app/favicon_plain.png
 var rootFiles embed.FS
 var RootFiles fs.FS
 
 //go:embed frontend-app/static/css
 //go:embed frontend-app/static/js
+//go:embed frontend-app/static/img
 var staticFiles embed.FS
 var StaticFiles fs.FS
 

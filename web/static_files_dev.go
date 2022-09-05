@@ -3,8 +3,17 @@
 
 package web
 
-import "io/fs"
+import (
+	"io/fs"
+	"os"
+)
 
-// Dummy, empty filesystems (in dev mode, the static files are handled by vue-cli)
-var RootFiles fs.FS
-var StaticFiles fs.FS
+type dummyFS struct{}
+
+func (f dummyFS) Open(name string) (fs.File, error) {
+	return nil, &fs.PathError{Op: "open", Path: name, Err: os.ErrNotExist}
+}
+
+// Dummy,empty filesystems (in dev mode, the static files are handled by vue-cli)
+var RootFiles dummyFS
+var StaticFiles dummyFS
