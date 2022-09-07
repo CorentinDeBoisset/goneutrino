@@ -92,6 +92,7 @@ export default defineComponent({
 	margin: 0.5rem 0 0 0;
 	font-weight: 200;
 	text-align: center;
+	font-style: italic;
 }
 
 .neutrino-logo {
