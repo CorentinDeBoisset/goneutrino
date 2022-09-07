@@ -1,9 +1,18 @@
 {
-  "splash_message": "Chargement...",
-  "header-title": "NEUTRINO",
-  "header-subtitle": "Sécurisez le partage vos mots de passe et fichiers confidentiels",
-  "hello": "Bonjour,",
-  "pick-nickname": "Quel est votre nom ?",
-  "submit-nickname": "C'est parti !",
-  "nickname-placeholder": "Jackson"
+	"splash_message": "Chargement...",
+	"header-title": "NEUTRINO",
+	"header-subtitle": "Sécurisez le partage vos mots de passe et fichiers confidentiels",
+	"name-selector__hello": "Bonjour,",
+	"name-selector__pick-nickname": "Quel est votre nom ?",
+	"name-selector__nickname-placeholder": "Jackson",
+	"name-selector__submit-action": "C'est parti ! →",
+	"peer-selector__pick-peer": "Quel est l’identifiant (numérique) de votre contact ?",
+	"peer-selector__submit-action": "Lancer la connexion →",
+	"peer-validate__title": "Valider l’identité de XXX",
+	"peer-validate__label": "Pour certifier la sécurité de la connexion, contactez XXX à l’aide d’un moyen de communication de confiance, et vérifier que les signatures de vos clés correspondent.",
+	"peer-validate__more-info": "Cette étape permet de certifier que votre contact détient bien votre clé de chiffrement, et que vous enverrez vos secrets chiffrés de manière sécurisée. Pour faciliter cette étape, les signatures numériques ont été converties en une série d’emojis qui doivent être identiques de chaque côté.",
+	"peer-validate__own-key": "Votre signature :",
+	"peer-validate__peer-key": "Signature de XXX :",
+	"peer-validate__refuse-action": "Les signatures ne correspondent pas",
+	"peer-validate__ok-action": "Les signatures correspondent →"
 }

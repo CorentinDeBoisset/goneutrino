@@ -1,9 +1,18 @@
 {
-  "splash_message": "Loading...",
-  "header-title": "NEUTRINO",
-  "header-subtitle": "Share your passwords and confidential files securely",
-  "hello": "Hello,",
-  "pick-nickname": "What is your name?",
-  "submit-nickname": "Let's go!",
-  "nickname-placeholder": "Kevin McKevinface"
+	"splash_message": "Loading...",
+	"header-title": "NEUTRINO",
+	"header-subtitle": "Share your passwords and confidential files securely",
+	"name-selector__hello": "Hello,",
+	"name-selector__pick-nickname": "What is your name?",
+	"name-selector__nickname-placeholder": "Kevin McKevinface",
+	"name-selector__submit-action": "Let's go! →",
+	"peer-selector__pick-peer": "What is the numeric identifier of your contact?",
+	"peer-selector__submit-action": "Start a connection →",
+	"peer-validate__title": "Validate XXX’s identity",
+	"peer-validate__label": "To ensure the safety of the connection, contact XXX using a trusted communication channel and check that both the fingerprints match.",
+	"peer-validate__more-info": "This step is required to check that your contact has your encryption key, and that you will send your encrypted secrets in a secure way. To make this step easier, the digital signatures were converted into a series of emojies that should match on both sides",
+	"peer-validate__own-key": "Your fingerprint:",
+	"peer-validate__peer-key": "XXX’s fingerprint:",
+	"peer-validate__refuse-action": "The fingerprints do not match",
+	"peer-validate__ok-action": "The fingerprints match →"
 }
