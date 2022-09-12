@@ -1,10 +1,10 @@
 <template>
 	<div class="secret-exchange">
 		<h3 class="section-title">Partage de secrets avec XXX</h3>
-		<div class="secret-exchange__panels">
-			<SecretUploadPanel class="secret-exchange__panel own-secrets" panel-title="Secrets envoyés" :secret-list="ownSecrets" />
-			<div class="secret-exchange__panel-separator"></div>
-			<SecretDownloadPanel class="secret-exchange__panel peer-secrets" panel-title="Secrets reçus" :secret-list="peerSecrets" />
+		<div class="secret-exchange__panels flex-row align-stretch">
+			<SecretUploadPanel class="secret-exchange__panel own-secrets col" panel-title="Secrets envoyés" :secret-list="ownSecrets" />
+			<div class="secret-exchange__panel-separator col-auto"></div>
+			<SecretDownloadPanel class="secret-exchange__panel peer-secrets col" panel-title="Secrets reçus" :secret-list="peerSecrets" />
 		</div>
 	</div>
 </template>
@@ -13,6 +13,7 @@
 import { defineComponent } from 'vue';
 import SecretDownloadPanel from './SecretDownloadPanel.vue';
 import SecretUploadPanel from './SecretUploadPanel.vue';
+import { Download, Upload, DownloadStatus, UploadStatus } from '../types';
 
 export default defineComponent({
 	name: "SecretExchange",
@@ -22,8 +23,18 @@ export default defineComponent({
 	},
 	data() {
 		return {
-			ownSecrets: [{ id: "1", name: "toto" }, { id: "13", name: "othersecret.jpg" }],
-			peerSecrets: [{ id: "1212", name: "supnetniurae" }, { id: "6323", name: "somethingelse" }],
+			ownSecrets: [
+				{ id: "1", name: "toto", progress: 0, speed: 123, status: UploadStatus.Encryption },
+				{ id: "50", name: "toto", progress: 0.95, speed: 123, status: UploadStatus.Upload },
+				{ id: "13", name: "otherq dsfdsqqsd qsdf fdsq qsdf fdsq aer reaz azer reza azer reaz ffsdqqsdf secret.jpg", progress: 1, speed: 123, status: UploadStatus.Done }
+			] as Array<Upload>,
+			peerSecrets: [
+				{ id: "1212", name: "supnetniurae", progress: 0, status: DownloadStatus.Available },
+				{ id: "3344", name: "supnetniurae", progress: 0.6, status: DownloadStatus.Download },
+				{ id: "6323", name: "somethinqsdf sqdf qsdf qsfd fdq qsdf fdsq fsqd qsdf gelse", progress: 0.4, status: DownloadStatus.Download },
+				{ id: "4732", name: "supnetniurae", progress: 1, status: DownloadStatus.Decryption },
+				{ id: "4732", name: "supnetniurae", progress: 1, status: DownloadStatus.Done },
+			] as Array<Download>,
 		};
 	}
 })
@@ -31,20 +42,11 @@ export default defineComponent({
 
 <style scoped>
 .secret-exchange__panels {
-	display: flex;
-	flex-direction: row;
-	justify-content: center;
-	align-items: stretch;
+	margin: 1rem;
 }
-
 .secret-exchange__panel-separator {
 	width: 1px;
 	background-color: #007172;
-}
-
-.secret-exchange__panel {
-	padding: 1rem;
-	margin: 1rem;
-	flex-grow: 1;
+	margin: 0 2rem;
 }
 </style>

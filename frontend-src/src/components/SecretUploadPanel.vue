@@ -2,16 +2,20 @@
 	<div class="secret-panel">
 		<div class="secret-panel__title">{{ panelTitle }}</div>
 		<div class="secret-panel__secret-list">
-			<div v-for="(secret, idx) in secretList">
-				<SecretUpload :secret-name="secret.name" />
-				<hr v-if="idx !== secretList.length - 1" />
+			<div v-for="(secret, idx) in secretList" :key="secret.id">
+				<hr v-if="idx !== 0" />
+				<SecretUpload :upload="secret" />
 			</div>
+			<form @submit.prevent="" class="secret-panel__file-form">
+				<input type="file" name="qdsf" multiple />
+			</form>
 		</div>
 	</div>
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { Upload } from '@/types';
+import { defineComponent, PropType } from 'vue';
 import SecretUpload from "./SecretUpload.vue";
 
 export default defineComponent({
@@ -22,7 +26,7 @@ export default defineComponent({
 	props: {
 		panelTitle: String,
 		secretList: {
-			type: Array as () => Array<{ id: String, name: String }>,
+			type: Array as PropType<Array<Upload>>,
 			default: [],
 		},
 	},
@@ -33,5 +37,9 @@ export default defineComponent({
 hr {
 	border: 0;
 	border-top: solid 1px rgba(0, 0, 0, 0.2);
+}
+
+.secret-panel__file-form {
+	text-align: center;
 }
 </style>

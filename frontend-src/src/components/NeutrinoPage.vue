@@ -1,17 +1,20 @@
 <template>
-	<div class="neutrino-page">
-		<div class="neutrino-page__upper-body">
-			<header class="neutrino-header">
-				<img class="neutrino-logo" src="../assets/logo_large.svg" alt="Neutrino logo" />
-				<h1>
-					<span aria-hidden="true">&#8211;</span>{{ $t("header-title")
-					}}<span aria-hidden="true">&#8211;</span>
-				</h1>
-				<h2>{{ $t("header-subtitle") }}</h2>
-			</header>
-			<section class="neutrino-content">
-				<component :is="currentComponent"></component>
-			</section>
+	<div class="neutrino-page flex-column align-center justify-between">
+		<div class="neutrino-page__upper-body flex-row">
+			<div class="col-6 mx-auto">
+				<header class="neutrino-header flex-column align-center">
+					<img class="neutrino-logo" src="../assets/logo_large.svg" alt="Neutrino logo" />
+					<h1>
+						<span aria-hidden="true">&#8211;</span>
+						{{ $t("header-title") }}
+						<span aria-hidden="true">&#8211;</span>
+					</h1>
+					<h2>{{ $t("header-subtitle") }}</h2>
+				</header>
+				<section class="neutrino-content">
+					<component :is="currentComponent"></component>
+				</section>
+			</div>
 		</div>
 		<footer class="neutrino-footer">
 			<localeChanger />
@@ -45,36 +48,14 @@ export default defineComponent({
 </script>
 
 <style scoped>
-.neutrino-page {
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	justify-content: space-between;
-	padding: 0 2rem;
-}
-
-@media (min-width: 60rem) {
-	.neutrino-page {
-		padding: 0 15rem;
-	}
-}
-
-.neutrino-page__upper-body {
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-}
-
 .neutrino-header {
-	display: flex;
-	flex-direction: column;
-	align-items: center;
 	margin: 1rem 0 1rem;
+	text-align: center;
 }
 
 .neutrino-header h1,
 .neutrino-header h2 {
-	color: #f29325;
+	color: var(--primary-light-color);
 	padding: 0;
 }
 
@@ -91,7 +72,6 @@ export default defineComponent({
 	font-size: 1rem;
 	margin: 0.5rem 0 0 0;
 	font-weight: 200;
-	text-align: center;
 	font-style: italic;
 }
 
@@ -100,7 +80,7 @@ export default defineComponent({
 }
 
 .neutrino-content {
-	border: solid 1px #007172;
+	border: solid 1px var(--secondary-light-color);
 	padding: 1rem 2rem;
 	margin: 1rem 0 0;
 	border-radius: 0.3rem;
@@ -109,7 +89,6 @@ export default defineComponent({
 }
 
 .neutrino-footer {
-	margin: 0 0 1rem 0;
-	width: 100%;
+	padding: 2rem 3rem 2rem 0;
 }
 </style>

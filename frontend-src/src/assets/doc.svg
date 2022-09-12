@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="32.999996mm"
+   height="43mm"
+   viewBox="0 0 32.999996 43"
+   version="1.1"
+   id="svg5"
+   inkscape:version="1.2.1 (9c6d41e410, 2022-07-14)"
+   sodipodi:docname="doc.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview7"
+     pagecolor="#ffffff"
+     bordercolor="#025259"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:document-units="mm"
+     showgrid="false"
+     inkscape:zoom="1.4770342"
+     inkscape:cx="1.0155486"
+     inkscape:cy="86.660146"
+     inkscape:window-width="1920"
+     inkscape:window-height="1009"
+     inkscape:window-x="-8"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer1" />
+  <defs
+     id="defs2">
+    <inkscape:path-effect
+       effect="fillet_chamfer"
+       id="path-effect3333"
+       is_visible="true"
+       lpeversion="1"
+       nodesatellites_param="F,0,0,1,0,0,0,1 @ F,0,0,1,0,2.1166667,0,1 @ F,0,0,1,0,2.1166667,0,1 @ F,0,0,1,0,2.1166667,0,1 @ F,0,0,1,0,0,0,1"
+       unit="px"
+       method="auto"
+       mode="F"
+       radius="8"
+       chamfer_steps="1"
+       flexible="false"
+       use_knot_distance="true"
+       apply_no_radius="true"
+       apply_with_radius="true"
+       only_selected="false"
+       hide_knots="false" />
+  </defs>
+  <g
+     inkscape:label="Calque 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(1.5,1.5000001)">
+    <path
+       style="fill:none;stroke:#025259;stroke-width:2;stroke-dasharray:none;stroke-opacity:1"
+       d="M 20,0 H 2.1166667 A 2.1166667,2.1166667 135 0 0 0,2.1166667 V 37.883333 A 2.1166667,2.1166667 45 0 0 2.1166667,40 L 27.883333,40 A 2.1166667,2.1166667 135 0 0 30,37.883333 V 10"
+       id="path238"
+       sodipodi:nodetypes="ccccc"
+       inkscape:original-d="M 20,0 H 0 V 40 H 30 V 10"
+       inkscape:path-effect="#path-effect3333"
+       inkscape:export-filename="doc_export.svg"
+       inkscape:export-xdpi="24.223927"
+       inkscape:export-ydpi="24.223927" />
+    <path
+       style="fill:none;stroke:#025259;stroke-width:2;stroke-dasharray:none;stroke-opacity:1"
+       d="M 7,18.970995 H 23"
+       id="path998"
+       sodipodi:nodetypes="cc" />
+    <path
+       style="fill:none;stroke:#025259;stroke-width:2;stroke-dasharray:none;stroke-opacity:1"
+       d="M 7,24.970995 H 23"
+       id="path998-1"
+       sodipodi:nodetypes="cc" />
+    <path
+       style="fill:none;stroke:#025259;stroke-width:2;stroke-dasharray:none;stroke-opacity:1"
+       d="M 7,30.970995 H 23"
+       id="path998-1-4"
+       sodipodi:nodetypes="cc" />
+    <path
+       style="fill:none;stroke:#025259;stroke-width:2;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1"
+       d="M 20,0 V 10 H 30 Z"
+       id="path1044"
+       sodipodi:nodetypes="cccc"
+       inkscape:export-filename="doc_export.svg"
+       inkscape:export-xdpi="24.223927"
+       inkscape:export-ydpi="24.223927" />
+  </g>
+</svg>

@@ -1,66 +1,58 @@
 <template>
 	<div class="secret-item flex-row">
 		<div class="col-auto">
-			<img class="secret-item__icon" src="../assets/file.svg" alt="File logo" />
+			<img class="secret-item__icon" src="../assets/doc.svg" alt="File logo" />
 		</div>
 		<div class="col">
 			<div class="flex-row">
-				<div class="secret-item__name col-auto">{{ secretName }}</div>
-				<div class="secret-item__size col">2mb</div>
-				<img class="secret-item__cancel col-auto" src="../assets/x.svg" alt="X">
+				<div class="secret-item__name col">{{ upload.name }}</div>
+				<div class="col-1">
+					<img v-if="upload.progress < 1" class="secret-item__cancel" src="../assets/x.svg" alt="X" />
+				</div>
 			</div>
-			<progress max="100" :value="progress" :alt="`Upload progress at ${progress}%`">{{ progress }}%</progress>
+			<progress max="1" :value="upload.progress" :alt="`Upload progress at ${upload.progress * 100}%`">
+				{{ upload.progress * 100 }}%
+			</progress>
 			<div class="flex-row">
-				<div class="secret-item__upload-info col">37%</div>
-				<div class="secret-item__upload-info col-auto">12 KB/sec</div>
+				<div class="secret-item__upload-info col">
+					{{ (upload.progress * 100).toLocaleString(undefined, { maximumFractionDigits:1 }) }}%
+				</div>
+				<div class="secret-item__upload-info col-auto">
+					<div v-if="upload.progress < 1">
+						{{ formatSize(upload.speed) }}/sec
+					</div>
+				</div>
 			</div>
 		</div>
 	</div>
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { defineComponent, PropType } from 'vue';
+import { formatSize } from '../util';
+import { Upload, UploadStatus } from '../types';
 
 export default defineComponent({
 	name: "SecretUpload",
 	props: {
-		secretName: String,
-		secretType: String,
+		upload: { type: Object as PropType<Upload>, required: true },
 	},
-	data() {
-		return {
-			progress: 70,
-		};
-	},
+	methods: {
+		formatSize,
+	}
 });
 </script>
 
 <style scoped>
-progress {
-	width: 100%;
-	border: none;
-	background-color: lightgray;
-	color: #007172;
-	border-radius: 0.3rem;
-	height: 0.3rem;
-}
-
-progress::-moz-progress-bar,
-progress::-webkit-progress-value,
-progress::-webkit-progress-bar {
-	background-color: #025259;
-	border-radius: 0.3rem;
-	height: 0.3rem;
-}
-
 .secret-item {
 	margin: 1rem 0;
 	border-radius: 3px;
 }
 
 .secret-item__icon {
-	width: 2.2rem;
-	margin-right: 0.5rem;
+	width: 2rem;
+	margin-right: 0.8rem;
+	opacity: 0.6;
 }
 
 .secret-item__name {
@@ -80,5 +72,8 @@ progress::-webkit-progress-bar {
 
 .secret-item__cancel {
 	width: 1.1rem;
+}
+.secret-item__cancel.hidden {
+	visibility: hidden;
 }
 </style>
