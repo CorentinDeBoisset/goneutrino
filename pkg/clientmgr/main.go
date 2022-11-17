@@ -130,7 +130,7 @@ func (store *ClientStore) GetClient(sessionId string) (*ClientInstance, error) {
 
 	client, ok := store.Clients[sessionId]
 	if !ok {
-		return nil, fmt.Errorf("there are no public key for the given identifier (%s)", sessionId)
+		return nil, fmt.Errorf("no client could be found for the identifier \"%s\"", sessionId)
 	}
 
 	if time.Now().After(client.Expiration) {

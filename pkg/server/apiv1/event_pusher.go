@@ -26,7 +26,7 @@ func eventPusherRoute(c *gin.Context) {
 
 	c.Stream(func(w io.Writer) bool {
 		// We don't wait indefinitely on the channels, or gin would not be able to tell if the connection is dead
-		timeout := time.NewTimer(5 * time.Second)
+		timeout := time.NewTimer(1 * time.Second)
 		select {
 		case peerId := <-clientInstance.NewPeers:
 			c.SSEvent("new-peer", gin.H{"peerId": peerId})

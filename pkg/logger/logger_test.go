@@ -45,6 +45,9 @@ func TestVerbosityLevers(t *testing.T) {
 	SetLogOutput(buf)
 
 	SetLogLevel(1)
+	if GetLogLevel() != 1 {
+		t.Fatalf("The log level was not changed (expected: %d, actual: %d)", 1, GetLogLevel())
+	}
 	ErrorLog("some error log")
 	WarningLog("some warning log")
 	InfoLog("some info log")
@@ -59,6 +62,9 @@ func TestVerbosityLevers(t *testing.T) {
 
 	buf.Reset()
 	SetLogLevel(2)
+	if GetLogLevel() != 2 {
+		t.Fatalf("The log level was not changed (expected: %d, actual: %d)", 2, GetLogLevel())
+	}
 	ErrorLog("some error log")
 	WarningLog("some warning log")
 	InfoLog("some info log")
