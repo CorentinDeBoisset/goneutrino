@@ -8,8 +8,11 @@
 	--primary-light-color: rgba(242, 147, 37, 1);
 	--secondary-color: rgba(2, 82, 89, 1);
 	--secondary-light-color: rgba(0, 113, 114, 1);
+	--secondary-ulight-color: rgba(0, 113, 114, 1);
 	--light-color: rgba(252, 250, 242, 1);
 
+
+	--ultralight-gray-color: #F1F1F1;
 	--light-gray-color: lightgray;
 	--gray-color: gray;
 	--dark-gray-color: darkgray;
@@ -52,7 +55,7 @@ html {
 }
 
 .btn:focus {
-	outline: solid 2px var(--secondary-soft-color);
+	outline: solid 2px var(--secondary-light-color);
 	outline-offset: 2px;
 }
 
@@ -75,8 +78,8 @@ input[type=text] {
 }
 
 input[type=text]:focus {
-	outline: solid 1px var(--secondary-soft-color);
-	border: solid 1px var(--secondary-soft-color);
+	outline: solid 1px var(--secondary-light-color);
+	border: solid 1px var(--secondary-light-color)
 }
 
 

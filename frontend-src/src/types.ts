@@ -19,17 +19,16 @@ enum UploadStatus {
 }
 
 interface UploadFile {
-    type: UploadFileType;
     id: string;
     name: string;
     date: Date;
+    size: number;
     speed: number;
     progress: number;
     status: UploadStatus;
 }
 
 interface UploadString {
-    type: UploadStringType;
     id: string;
     content: string;
     date: Date;
@@ -37,21 +36,28 @@ interface UploadString {
 }
 
 interface DownloadFile {
-    type: DownloadFileType,
     id: string;
     name: string;
     date: Date;
+    size: number;
     speed: number;
     progress: number;
     status: DownloadStatus;
 }
 
 interface DownloadString {
-    type: DownloadStringType,
     id: string;
     content: string;
     date: Date;
-    sattus: DownloadStatus;
+    status: DownloadStatus;
+}
+
+interface SecretItem {
+    id: string;
+    downloadString?: DownloadString;
+    downloadFile?: DownloadFile;
+    uploadString?: UploadString;
+    uploadFile?: UploadFile;
 }
 
 export {
@@ -61,4 +67,5 @@ export {
     DownloadString,
     UploadFile,
     UploadString,
+    SecretItem,
 }

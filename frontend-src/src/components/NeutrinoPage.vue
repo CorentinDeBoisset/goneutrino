@@ -81,7 +81,6 @@ export default defineComponent({
 
 .neutrino-content {
 	border: solid 1px var(--secondary-light-color);
-	padding: 1rem 2rem;
 	margin: 1rem 0 0;
 	border-radius: 0.3rem;
 	background-color: #fff;
