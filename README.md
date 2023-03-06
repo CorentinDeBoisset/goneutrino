@@ -1,3 +1,5 @@
+Warning: This project is not ready. A lot of development is still required until an alpha could even be released.
+
 <p align="center">
     <img src="https://github.com/corentindeboisset/neutrino/raw/main/frontend-src/src/assets/logo_large.svg" alt="Logo of the neutrino application" style="width: 8rem" />
 </p>
