@@ -12,7 +12,7 @@ import (
 func eventPusherRoute(c *gin.Context) {
 	client, found := c.Get("client")
 	if !found {
-		c.JSON(http.StatusUnauthorized, gin.H{"message": "A valid session is required to start polling events"})
+		c.JSON(http.StatusUnauthorized, gin.H{"msg": "api__unauthorized"})
 		return
 	}
 

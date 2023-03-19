@@ -1,3 +1,5 @@
+import { PublicKey, PrivateKey } from "openpgp";
+
 enum SecretType {
   UploadFileType,
   UploadStringType,
@@ -16,6 +18,11 @@ enum UploadStatus {
   Encryption,
   Upload,
   Done,
+}
+
+interface KeyPairType {
+  publicKey: PublicKey | null;
+  privateKey: PrivateKey | null;
 }
 
 interface UploadFile {
@@ -63,6 +70,7 @@ interface SecretItem {
 export {
   DownloadStatus,
   UploadStatus,
+  KeyPairType,
   DownloadFile,
   DownloadString,
   UploadFile,

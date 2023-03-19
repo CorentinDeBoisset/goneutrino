@@ -1,7 +1,6 @@
 package apiv1
 
 import (
-	"fmt"
 	"net/http"
 	"strconv"
 	"strings"
@@ -23,7 +22,7 @@ func registerClientRoute(c *gin.Context) {
 	// Also set a session cookie, that will be used to re-identify the client
 	var body RegisterBody
 	if err := c.ShouldBindJSON(&body); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		c.JSON(http.StatusBadRequest, gin.H{"msg": "api__invalid_format", "error": err.Error()})
 		return
 	}
 
@@ -33,11 +32,12 @@ func registerClientRoute(c *gin.Context) {
 	entityList, err := openpgp.ReadArmoredKeyRing(strings.NewReader(body.PublicKey))
 	if err != nil {
 		logger.ErrorLog("The supplied openPGP public key could not be parsed: %s", err.Error())
-		c.JSON(http.StatusBadRequest, gin.H{"error": fmt.Sprintf("The supplied public key could not be parsed: %s", err.Error())})
+		c.JSON(http.StatusBadRequest, gin.H{"msg": "api__invalid_pgpkey"})
 		return
 	}
 	if len(entityList) == 0 {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "The supplied public key does not contain a valid entity"})
+		logger.ErrorLog("The supplied openPGP public key did not contain any entity")
+		c.JSON(http.StatusBadRequest, gin.H{"msg": "api__invalid_pgpkey"})
 		return
 	}
 
@@ -45,20 +45,20 @@ func registerClientRoute(c *gin.Context) {
 	sessionId, err := store.NewClient(body.Name, entityList[0], exp)
 	if err != nil {
 		logger.ErrorLog("The registration of a new client failed: %s", err.Error())
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "An error occured"})
+		c.JSON(http.StatusInternalServerError, gin.H{"msg": "api__generic_error"})
 		return
 	}
 
 	c.SetCookie("neutrino-session", sessionId, 24*30*3600, "/", "localhost", true, true)
 
 	// TODO: send the expiration date of the session to the JS
-	c.JSON(http.StatusOK, gin.H{"message": "Ok"})
+	c.JSON(http.StatusOK, gin.H{"msg": "api__ok"})
 }
 
 func validateStatusRoute(c *gin.Context) {
 	client, found := c.Get("client")
 	if !found {
-		c.JSON(http.StatusUnauthorized, gin.H{"message": "There is no current session for the user"})
+		c.JSON(http.StatusUnauthorized, gin.H{"msg": "api__no_current_session"})
 		return
 	}
 	clientInstance := client.(*clientmgr.ClientInstance)
@@ -71,48 +71,48 @@ func validateStatusRoute(c *gin.Context) {
 		_ = store.RemoveClient(c.GetString("client-uuid"))
 		c.SetCookie("neutrino-session", "", -1, "/", "localhost", true, true)
 
-		c.JSON(http.StatusUnauthorized, gin.H{"message": "The submitted public key is invalid"})
+		c.JSON(http.StatusUnauthorized, gin.H{"msg": "api__unknown_fingerprint"})
 		return
 	}
 
 	// TODO: send the expiration of the session to the JS
-	c.JSON(http.StatusOK, gin.H{"message": "The session is valid"})
+	c.JSON(http.StatusOK, gin.H{"msg": "api__ok"})
 }
 
 func getPublicKeyRoute(c *gin.Context) {
 	rawClient, found := c.Get("client")
 	if !found {
-		c.JSON(http.StatusUnauthorized, gin.H{"message": "Unauthorized"})
+		c.JSON(http.StatusUnauthorized, gin.H{"msg": "api__unauthorized"})
 		return
 	}
 	client := rawClient.(clientmgr.ClientInstance)
 
 	clientId, err := strconv.Atoi(c.Query("id"))
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"message": "the supplied value for `id` is not a valid integer"})
+		c.JSON(http.StatusBadRequest, gin.H{"msg": "api__invalid_format", "error": "The supplied value for `id` is not an integer"})
 		return
 	}
 	initiate, err := strconv.ParseBool(c.DefaultQuery("initiate", "false"))
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"message": "the supplied value for `initiate` is not a valid boolean"})
+		c.JSON(http.StatusBadRequest, gin.H{"msg": "api__invalid_format", "error": "the supplied value for `initiate` is not a valid boolean"})
 	}
 
 	store := c.MustGet("client-store").(*clientmgr.ClientStore)
 	peerClient, err := store.GetClientFromId(clientId)
 	if err != nil {
-		c.JSON(http.StatusNotFound, gin.H{"message": "the supplied id could not be associated with another client"})
+		c.JSON(http.StatusNotFound, gin.H{"msg": "api__unknown_peer", "error": "the supplied id could not be associated with another client"})
 		return
 	}
 
 	if !peerClient.IsOnline() {
-		c.JSON(http.StatusNotFound, gin.H{"message": "A client with the given id was found, but is not online"})
+		c.JSON(http.StatusNotFound, gin.H{"msg": "api__peer_offline", "error": "A client with the given id was found, but is not online"})
 		return
 	}
 
 	pubKey, err := peerClient.SerializePubKey()
 	if err != nil {
 		logger.ErrorLog("failed to serialize the public key of a client (id=%d): %s", clientId, err.Error())
-		c.JSON(http.StatusInternalServerError, gin.H{"message": "an error occured"})
+		c.JSON(http.StatusInternalServerError, gin.H{"msg": "api__generic_error"})
 		return
 	}
 
@@ -123,5 +123,5 @@ func getPublicKeyRoute(c *gin.Context) {
 		peerClient.NewPeers <- client.Id
 	}
 
-	c.JSON(http.StatusOK, gin.H{"publicKey": pubKey})
+	c.JSON(http.StatusOK, gin.H{"msg": "api__ok", "publicKey": pubKey})
 }

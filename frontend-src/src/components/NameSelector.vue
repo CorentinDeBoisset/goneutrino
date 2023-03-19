@@ -1,5 +1,5 @@
 <template>
-  <form @submit.prevent="" class="name-selector">
+  <form @submit.prevent="register()" class="name-selector">
     <div class="name-selector__input-block">
       <div class="name-selector__input-label section-title">
         {{ $t("name-selector__hello") }}
@@ -17,28 +17,70 @@
         {{ $t("name-selector__submit-action") }}
       </button>
     </div>
-    <div v-show="false" class="name-selector__error-block">
-      Une erreur est survenue
+    <div v-if="error.length > 0" class="name-selector__error-block">
+      {{ error }}
     </div>
   </form>
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import { KeyPair } from "openpgp";
+import { defineComponent, PropType } from "vue";
 
 export default defineComponent({
   name: "NameSelector",
+  props: {
+    keyPair: {
+      type: Object as PropType<KeyPair>,
+      required: true,
+    },
+  },
   data() {
     return {
       nickname: "",
+      error: "",
     };
+  },
+  methods: {
+    async register() {
+      if (this.nickname.length <= 0 || this.keyPair.publicKey == null) {
+        // TODO: show why we cannot validate?
+        return;
+      }
+
+      // Start the loader
+
+      await fetch("/api/v1/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          Name: this.nickname,
+          PublicKey: this.keyPair.publicKey.armor(),
+        }),
+      })
+        .then((res) => {
+          if (res.status >= 500) {
+            throw { msg: "api__generic_error" };
+          }
+          if (res.status >= 400) {
+            throw res.json();
+          }
+          return res.json();
+        })
+        .then(() => {
+          this.$emit("next", { nickname: this.nickname });
+        })
+        .catch((err) => {
+          this.error = this.$t(err.msg);
+        });
+    },
   },
 });
 </script>
 
 <style scoped>
 .name-selector {
-  margin: 0.5rem 0 0;
+  margin: 0.5rem;
 }
 
 .name-selector__input-label {

@@ -1,15 +1,7 @@
-import {
-  generateKey,
-  readKey,
-  readPrivateKey,
-  PublicKey,
-  PrivateKey,
-} from "openpgp";
+import { generateKey, readKey, readPrivateKey } from "openpgp";
+import { KeyPairType } from "./types";
 
-export async function initKeys(): Promise<{
-  publicKey: PublicKey;
-  privateKey: PrivateKey;
-}> {
+export async function initKeys(): Promise<KeyPairType> {
   const rawPrivateKey = localStorage.getItem("neutrino-private-key");
   const rawPublicKey = localStorage.getItem("neutrino-public-key");
 
@@ -42,7 +34,7 @@ export async function initKeys(): Promise<{
       keyExpirationTime: 3600 * 24 * 30 + 3600, // Default duration of a server session, plus a buffer to be safe
       userIDs: [{ name: "anonymous" }],
       format: "armored",
-      // TODO: handle the subkey generation
+      // TODO: maybe handle the subkey generation
     });
     const publicKey = await readKey({ armoredKey: keyPair.publicKey });
     const privateKey = await readPrivateKey({ armoredKey: keyPair.privateKey });

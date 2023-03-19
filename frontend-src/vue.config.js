@@ -24,4 +24,11 @@ module.exports = defineConfig({
       fullInstall: true,
     },
   },
+  devServer: {
+    proxy: {
+      "^/api": {
+        target: "http://localhost:8081/", // TODO: improve this? using env variables for instance
+      },
+    },
+  },
 });

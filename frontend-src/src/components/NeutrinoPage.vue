@@ -16,7 +16,25 @@
           <h2>{{ $t("header-subtitle") }}</h2>
         </header>
         <section class="neutrino-content">
-          <component :is="currentComponent"></component>
+          <NameSelector
+            v-if="currentComponent === 'NameSelector'"
+            :keyPair="keyPair"
+            @next="currentComponent = 'PeerSelector'"
+          />
+          <PeerSelector
+            v-else-if="currentComponent === 'PeerSelector'"
+            @cancel="currentComponent = 'NameSelector'"
+            @next="currentComponent = 'PeerValidator'"
+          />
+          <PeerValidator
+            v-else-if="currentComponent === 'PeerValidator'"
+            @cancel="currentComponent = 'PeerSelector'"
+            @next="currentComponent = 'SecretExchange'"
+          />
+          <SecretExchange
+            v-else-if="currentComponent === 'SecretExchange'"
+            @terminate="currentComponent = 'PeerSelector'"
+          />
         </section>
       </div>
     </div>
@@ -27,18 +45,25 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent, PropType } from "vue";
 import LocaleChanger from "./LocaleChanger.vue";
 import NameSelector from "./NameSelector.vue";
 import PeerSelector from "./PeerSelector.vue";
 import PeerValidator from "./PeerValidator.vue";
 import SecretExchange from "./SecretExchange.vue";
+import { KeyPairType } from "@/types";
 
 export default defineComponent({
   name: "NeutrinoPage",
+  props: {
+    keyPair: {
+      type: Object as PropType<KeyPairType>,
+      required: true,
+    },
+  },
   data() {
     return {
-      currentComponent: "SecretExchange",
+      currentComponent: "NameSelector",
     };
   },
   components: {
