@@ -23,59 +23,55 @@
   </form>
 </template>
 
-<script lang="ts">
-import { KeyPair } from "openpgp";
-import { defineComponent, PropType } from "vue";
+<script setup lang="ts">
+import { KeyPairType } from "@/types";
+import { ref, defineProps } from "vue";
+import { useI18n } from 'vue-i18n'
 
-export default defineComponent({
-  name: "NameSelector",
-  props: {
-    keyPair: {
-      type: Object as PropType<KeyPair>,
-      required: true,
-    },
-  },
-  data() {
-    return {
-      nickname: "",
-      error: "",
-    };
-  },
-  methods: {
-    async register() {
-      if (this.nickname.length <= 0 || this.keyPair.publicKey == null) {
-        // TODO: show why we cannot validate?
-        return;
+export interface Props {
+  keyPair: KeyPairType
+}
+
+const props = defineProps<Props>()
+
+const nickname = ref("");
+const error = ref("")
+
+const emit = defineEmits(['next'])
+const { t } = useI18n()
+
+async function register() {
+  if (nickname.value.length <= 0 || props.keyPair.publicKey == null) {
+    // TODO: show why we cannot validate?
+    return;
+  }
+
+  // Start the loader
+
+  await fetch("/api/v1/register", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      Name: nickname.value,
+      PublicKey: props.keyPair.publicKey.armor(),
+    }),
+  })
+    .then((res) => {
+      if (res.status >= 500) {
+        throw { msg: "api__generic_error" };
       }
-
-      // Start the loader
-
-      await fetch("/api/v1/register", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          Name: this.nickname,
-          PublicKey: this.keyPair.publicKey.armor(),
-        }),
-      })
-        .then((res) => {
-          if (res.status >= 500) {
-            throw { msg: "api__generic_error" };
-          }
-          if (res.status >= 400) {
-            throw res.json();
-          }
-          return res.json();
-        })
-        .then(() => {
-          this.$emit("next", { nickname: this.nickname });
-        })
-        .catch((err) => {
-          this.error = this.$t(err.msg);
-        });
-    },
-  },
-});
+      if (res.status >= 400) {
+        throw res.json();
+      }
+      return res.json();
+    })
+    .then(() => {
+      emit("next", { nickname });
+    })
+    .catch((err) => {
+      error.value = t(err.msg);
+    });
+}
 </script>
 
 <style scoped>

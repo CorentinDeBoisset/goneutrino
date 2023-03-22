@@ -1,4 +1,4 @@
-import { PublicKey, PrivateKey } from "openpgp";
+import openpgp from "openpgp";
 
 enum SecretType {
   UploadFileType,
@@ -21,8 +21,8 @@ enum UploadStatus {
 }
 
 interface KeyPairType {
-  publicKey: PublicKey | null;
-  privateKey: PrivateKey | null;
+  publicKey: openpgp.Key | null;
+  privateKey: openpgp.PrivateKey | null;
 }
 
 interface UploadFile {

@@ -8,62 +8,55 @@
     />
     <NeutrinoPage
       class="fullheight"
+      :key-pair="keyPair"
       v-else-if="splashStatus === 'finished'"
-      :keyPair="keyPair"
     />
   </transition>
 </template>
 
-<script lang="ts">
-import { defineComponent } from "vue";
+<script setup lang="ts">
+import { ref, reactive, onMounted } from "vue";
+import { useI18n } from 'vue-i18n'
 import SplashLogo from "./components/SplashLogo.vue";
 import NeutrinoPage from "./components/NeutrinoPage.vue";
 import { initKeys } from "./crypto";
-import { KeyPairType } from "./types";
+import { KeyPairType } from "@/types";
 
-export default defineComponent({
-  name: "App",
-  data() {
-    return {
-      splashStatus: "init",
-      glowSplash: false,
-      keyPair: { publicKey: null, privateKey: null } as KeyPairType,
-    };
-  },
-  async mounted() {
-    this.splashStatus = "loading";
+const { t, locale, availableLocales } = useI18n()
+
+const splashStatus = ref<string>("init");
+const glowSplash= ref<boolean>(false);
+const keyPair: KeyPairType = reactive({ publicKey: null, privateKey: null });
+
+onMounted(async () => {
+  splashStatus.value = "loading";
     window.setTimeout(() => {
-      this.glowSplash = true;
+      glowSplash.value = true;
     }, 900);
     window.setTimeout(() => {
-      this.splashStatus = "finished";
+      splashStatus.value = "finished";
     }, 3200);
 
-    this.keyPair = await initKeys();
-  },
-  created() {
-    const locale = localStorage.getItem("locale");
-    if (locale != null && this.$i18n.availableLocales.indexOf(locale) !== -1) {
-      console.log(`Loaded the locale "${locale}" from localStorage`);
-      this.$i18n.locale = locale;
-      return;
-    } else {
-      localStorage.removeItem("locale");
-    }
-    const browserLocale = navigator.language.split("-");
-    if (
-      browserLocale.length &&
-      browserLocale[0].length &&
-      this.$i18n.availableLocales.indexOf(browserLocale[0]) !== -1
-    ) {
-      this.$i18n.locale = browserLocale[0];
-    }
-  },
-  components: {
-    SplashLogo,
-    NeutrinoPage,
-  },
-});
+    const newKeyPair = await initKeys()
+    keyPair.privateKey = newKeyPair.privateKey
+    keyPair.publicKey = newKeyPair.publicKey
+})
+
+const storedLocale = localStorage.getItem("locale");
+if (storedLocale != null && availableLocales.indexOf(storedLocale) !== -1) {
+  console.log(`Loaded the locale "${locale}" from localStorage`);
+  locale.value = storedLocale;
+} else {
+  localStorage.removeItem("locale");
+  const browserLocale = navigator.language.split("-");
+  if (
+    browserLocale.length &&
+    browserLocale[0].length &&
+    availableLocales.indexOf(browserLocale[0]) !== -1
+  ) {
+    locale.value = browserLocale[0];
+  }
+}
 </script>
 
 <style scoped>

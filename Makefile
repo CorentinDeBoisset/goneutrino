@@ -27,3 +27,10 @@ ${BIN_DIR}/${EXECUTABLE}: ${GO_FILES}
 
 ${BIN_DIR}/${EXECUTABLE}_prod: ${GO_FILES}
 	CGO_ENABLED=0 go build -tags prod -ldflags "-X main.ExecutableName=${EXECUTABLE} -X main.Version=${VERSION} -s -w" -o $@ ./cmd/neutrino
+
+.PHONY: watch
+watch:
+	while true; do \
+		inotifywait -qr -e modify -e create -e delete -e move ./pkg ./cmd; \
+		make ${BIN_DIR}/${EXECUTABLE}; \
+		done

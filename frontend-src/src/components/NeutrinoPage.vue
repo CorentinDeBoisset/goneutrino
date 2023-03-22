@@ -39,13 +39,13 @@
       </div>
     </div>
     <footer class="neutrino-footer">
-      <localeChanger />
+      <LocaleChanger />
     </footer>
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent, PropType } from "vue";
+<script setup lang="ts">
+import { defineProps, ref } from "vue";
 import LocaleChanger from "./LocaleChanger.vue";
 import NameSelector from "./NameSelector.vue";
 import PeerSelector from "./PeerSelector.vue";
@@ -53,27 +53,13 @@ import PeerValidator from "./PeerValidator.vue";
 import SecretExchange from "./SecretExchange.vue";
 import { KeyPairType } from "@/types";
 
-export default defineComponent({
-  name: "NeutrinoPage",
-  props: {
-    keyPair: {
-      type: Object as PropType<KeyPairType>,
-      required: true,
-    },
-  },
-  data() {
-    return {
-      currentComponent: "NameSelector",
-    };
-  },
-  components: {
-    LocaleChanger,
-    NameSelector,
-    PeerSelector,
-    PeerValidator,
-    SecretExchange,
-  },
-});
+export interface Props {
+  keyPair: KeyPairType
+}
+
+defineProps<Props>()
+
+const currentComponent = ref("NameSelector")
 </script>
 
 <style scoped>
