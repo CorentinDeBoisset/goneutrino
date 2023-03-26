@@ -32,25 +32,17 @@
   </form>
 </template>
 
-<script lang="ts">
-import { defineComponent } from "vue";
+<script setup lang="ts">
+import { ref } from "vue";
 
-export default defineComponent({
-  name: "SecretSenderForm",
-  data() {
-    return {
-      messageContent: "",
-    };
-  },
-  methods: {
-    onAttachmentChange() {
-      return;
-    },
-    sendMessage() {
-      return;
-    },
-  },
-});
+const messageContent = ref("");
+
+function onAttachmentChange() {
+  return;
+}
+function sendMessage() {
+  return;
+}
 </script>
 
 <style scoped>
@@ -95,9 +87,11 @@ export default defineComponent({
   display: flex;
   align-items: center;
 }
+
 .sender-form__button img {
   width: 1.5rem;
 }
+
 .sender-form__button.disabled {
   opacity: 0.5;
 }

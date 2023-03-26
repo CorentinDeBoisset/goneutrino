@@ -2,13 +2,13 @@
   <form @submit.prevent="" class="peer-selector">
     <div class="peer-selector__input-block">
       <div class="peer-selector__input-label section-title">
-        {{ $t("peer-selector__pick-peer") }}
+        {{ t("peer-selector__pick-peer") }}
       </div>
       <input v-model="peerId" placeholder="1234" />
     </div>
     <div class="peer-selector__submit-block">
       <button class="btn" type="submit">
-        {{ $t("peer-selector__submit-action") }}
+        {{ t("peer-selector__submit-action") }}
       </button>
     </div>
     <div v-show="false" class="peer-selector__error-block">
@@ -17,17 +17,11 @@
   </form>
 </template>
 
-<script lang="ts">
-import { defineComponent } from "vue";
+<script setup lang="ts">
+import { ref } from "vue";
+import { t } from "@/i18n";
 
-export default defineComponent({
-  name: "PeerSelector",
-  data() {
-    return {
-      peerId: "",
-    };
-  },
-});
+const peerId = ref<string>("");
 </script>
 
 <style scoped>

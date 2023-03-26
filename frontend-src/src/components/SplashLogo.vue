@@ -57,16 +57,13 @@
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent } from "vue";
+<script setup lang="ts">
+export interface Props {
+  glow: boolean;
+  message: string;
+}
 
-export default defineComponent({
-  name: "SplashLogo",
-  props: {
-    glow: Boolean,
-    message: String,
-  },
-});
+defineProps<Props>();
 </script>
 
 <style scoped>

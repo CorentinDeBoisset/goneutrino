@@ -1,12 +1,12 @@
 <template>
   <form @submit.prevent="" class="peer-validator">
     <h3 class="peer-validator__title section-title">
-      {{ $t("peer-validate__title") }}
+      {{ t("peer-validate__title") }}
     </h3>
     <div class="peer-validator__fingerprint-block-list">
       <div class="peer-validator__fingerpnts-block">
         <div class="peer-validator__fingerprint-title">
-          {{ $t("peer-validate__own-key") }}
+          {{ t("peer-validate__own-key") }}
         </div>
         <div class="peer-validator__fingerprint-emoji-set">
           <tw-emoji :str="ownKey.emojiSet.join(' ')" />
@@ -15,7 +15,7 @@
       </div>
       <div class="peer-validator__fingerpnts-block">
         <div class="peer-validator__fingerprint-title">
-          {{ $t("peer-validate__peer-key") }}
+          {{ t("peer-validate__peer-key") }}
         </div>
         <div class="peer-validator__fingerprint-emoji-set">
           <tw-emoji :str="peerKey.emojiSet.join(' ')" />
@@ -24,18 +24,18 @@
       </div>
     </div>
 
-    <p class="peer-validator__label">{{ $t("peer-validate__label") }}</p>
-    <p class="peer-validator__info">{{ $t("peer-validate__more-info") }}</p>
+    <p class="peer-validator__label">{{ t("peer-validate__label") }}</p>
+    <p class="peer-validator__info">{{ t("peer-validate__more-info") }}</p>
 
     <div class="peer-validator__submit-block">
       <div class="peer-validator__submit-button">
         <button class="btn btn-danger" type="button">
-          {{ $t("peer-validate__refuse-action") }}
+          {{ t("peer-validate__refuse-action") }}
         </button>
       </div>
       <div class="peer-validator__submit-button">
         <button class="btn" type="button">
-          {{ $t("peer-validate__ok-action") }}
+          {{ t("peer-validate__ok-action") }}
         </button>
       </div>
     </div>
@@ -45,23 +45,18 @@
   </form>
 </template>
 
-<script lang="ts">
-import { defineComponent } from "vue";
+<script setup lang="ts">
+import { t } from "@/i18n";
+import { reactive } from "vue";
 
-export default defineComponent({
-  name: "PeerValidator",
-  data() {
-    return {
-      ownKey: {
-        emojiSet: ["💕", "😒", "👌"],
-        hexa: "XXXX-YYYY-ZZZZ-TTTT",
-      },
-      peerKey: {
-        emojiSet: ["🤪", "🤮", "😊"],
-        hexa: "AAAA-BBBB-CCCC-DDDD",
-      },
-    };
-  },
+const ownKey = reactive({
+  emojiSet: ["💕", "😒", "👌"],
+  hexa: "XXXX-YYYY-ZZZZ-TTTT",
+});
+
+const peerKey = reactive({
+  emojiSet: ["🤪", "🤮", "😊"],
+  hexa: "AAAA-BBBB-CCCC-DDDD",
 });
 </script>
 

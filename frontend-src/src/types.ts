@@ -1,11 +1,11 @@
 import openpgp from "openpgp";
 
-enum SecretType {
-  UploadFileType,
-  UploadStringType,
-  DownloadFileType,
-  DownloadStringType,
-}
+// enum SecretType {
+//   UploadFileType,
+//   UploadStringType,
+//   DownloadFileType,
+//   DownloadStringType,
+// }
 
 enum DownloadStatus {
   Available,

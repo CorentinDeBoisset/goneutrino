@@ -4,7 +4,7 @@
       class="fullheight"
       v-if="splashStatus == 'loading'"
       :glow="glowSplash"
-      :message="$t('splash_message')"
+      :message="t('splash_message')"
     />
     <NeutrinoPage
       class="fullheight"
@@ -16,13 +16,13 @@
 
 <script setup lang="ts">
 import { ref, reactive, onMounted } from "vue";
-import { useI18n } from "vue-i18n";
 import SplashLogo from "./components/SplashLogo.vue";
 import NeutrinoPage from "./components/NeutrinoPage.vue";
 import { initKeys } from "./crypto";
 import { KeyPairType } from "@/types";
+import i18n from "@/i18n";
 
-const { locale, availableLocales } = useI18n();
+const t = i18n.global.t;
 
 const splashStatus = ref<string>("init");
 const glowSplash = ref<boolean>(false);
@@ -43,18 +43,21 @@ onMounted(async () => {
 });
 
 const storedLocale = localStorage.getItem("locale");
-if (storedLocale != null && availableLocales.indexOf(storedLocale) !== -1) {
-  console.log(`Loaded the locale "${locale}" from localStorage`);
-  locale.value = storedLocale;
+if (
+  storedLocale != null &&
+  i18n.global.availableLocales.indexOf(storedLocale) !== -1
+) {
+  console.log(`Loaded the locale "${storedLocale}" from localStorage`);
+  i18n.global.locale.value = storedLocale;
 } else {
   localStorage.removeItem("locale");
   const browserLocale = navigator.language.split("-");
   if (
     browserLocale.length &&
     browserLocale[0].length &&
-    availableLocales.indexOf(browserLocale[0]) !== -1
+    i18n.global.availableLocales.includes(browserLocale[0])
   ) {
-    locale.value = browserLocale[0];
+    i18n.global.locale.value = browserLocale[0];
   }
 }
 </script>

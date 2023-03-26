@@ -52,41 +52,34 @@
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent, PropType } from "vue";
+<script setup lang="ts">
+// import { ref } from "vue";
 import { SecretItem } from "@/types";
 import FileMessage from "./FileMessage.vue";
 
-export default defineComponent({
-  name: "SecretDisplayer",
-  components: {
-    FileMessage,
-  },
-  props: {
-    secrets: {
-      type: Array as PropType<Array<SecretItem>>,
-      required: true,
-    },
-  },
-  methods: {
-    formatDate(d: Date): string {
-      const now = new Date();
-      // If the date is today, we only show the hours and minutes
-      if (
-        now.getUTCFullYear() === d.getUTCFullYear() &&
-        now.getUTCMonth() === d.getUTCMonth() &&
-        now.getUTCDate() === d.getUTCDate()
-      ) {
-        // FIXME: improve using the translation library
-        return `${d.getHours()}:${d.getMinutes()}`;
-      }
+export interface Props {
+  secrets: Array<SecretItem>;
+}
 
-      // Else, we also show the day
-      // FIXME: same as above, not every language uses the same date format
-      return `${d.getDate()}/${d.getMonth()} ${d.getHours()}:${d.getMinutes()}`;
-    },
-  },
-});
+defineProps<Props>();
+
+// TODO: this should be factorized somewhere
+function formatDate(d: Date): string {
+  const now = new Date();
+  // If the date is today, we only show the hours and minutes
+  if (
+    now.getUTCFullYear() === d.getUTCFullYear() &&
+    now.getUTCMonth() === d.getUTCMonth() &&
+    now.getUTCDate() === d.getUTCDate()
+  ) {
+    // FIXME: improve using the translation library
+    return `${d.getHours()}:${d.getMinutes()}`;
+  }
+
+  // Else, we also show the day
+  // FIXME: same as above, not every language uses the same date format
+  return `${d.getDate()}/${d.getMonth()} ${d.getHours()}:${d.getMinutes()}`;
+}
 </script>
 
 <style scoped>

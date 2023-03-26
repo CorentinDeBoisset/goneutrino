@@ -175,56 +175,49 @@
   </div>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
+import { computed } from "vue";
 import { DownloadFile, UploadFile } from "@/types";
-import { defineComponent, PropType } from "vue";
+
+export interface Props {
+  file: DownloadFile | UploadFile;
+}
+
+const props = defineProps<Props>();
 
 const extensionRegexp = new RegExp("^.*\\.([a-zA-Z0-9]+)$");
 
-export default defineComponent({
-  name: "SecretDisplayer",
-  props: {
-    file: {
-      type: Object as PropType<DownloadFile | UploadFile>,
-      required: true,
-    },
-  },
-  computed: {
-    fileType() {
-      const matches = extensionRegexp.exec(this.file.name);
-      if (matches === null || matches.length < 1) {
-        // The filename has no extension, we return the default
-        return "file";
-      }
-      return matches[1];
-    },
-    altText() {
-      return `Fichier transferé : ${this.file.name}`;
-    },
-  },
-  methods: {
-    formatSize(bytes: number) {
-      if (Math.abs(bytes) < 1024) {
-        return bytes + " B";
-      }
-      const units = ["KB", "MB", "GB"];
-      let u = -1;
-      const r = 10 ** 2;
-      do {
-        bytes /= 1024;
-        ++u;
-      } while (
-        Math.round(Math.abs(bytes) * r) / r >= 1024 &&
-        u < units.length - 1
-      );
-
-      return bytes.toFixed(2) + " " + units[u];
-    },
-    downloadAction() {
-      // Start the download
-    },
-  },
+const fileType = computed(() => {
+  const matches = extensionRegexp.exec(props.file.name);
+  if (matches === null || matches.length < 1) {
+    // The filename has no extension, we return the default
+    return "file";
+  }
+  return matches[1];
 });
+
+const altText = computed(() => {
+  return `Fichier transferé : ${props.file.name}`;
+});
+
+function formatSize(bytes: number) {
+  if (Math.abs(bytes) < 1024) {
+    return bytes + " B";
+  }
+  const units = ["KB", "MB", "GB"];
+  let u = -1;
+  const r = 10 ** 2;
+  do {
+    bytes /= 1024;
+    ++u;
+  } while (Math.round(Math.abs(bytes) * r) / r >= 1024 && u < units.length - 1);
+
+  return bytes.toFixed(2) + " " + units[u];
+}
+
+function downloadAction() {
+  // Start the download
+}
 </script>
 
 <style scoped>

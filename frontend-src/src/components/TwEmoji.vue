@@ -13,78 +13,77 @@
   </span>
 </template>
 
-<script lang="ts">
-import { defineComponent } from "vue";
+<script setup lang="ts">
 import { parse } from "twemoji-parser";
+import { computed } from "vue";
 
-export default defineComponent({
-  props: {
-    str: {
-      type: String,
-      default: "",
-    },
-  },
-  computed: {
-    parsedBlocks(): Array<
-      | { type: "string"; idx: number; str: string }
-      | { type: "emoji"; idx: number; alt: string; url: string }
-    > {
-      const parsedEmojis = parse(this.str);
-      if (parsedEmojis.length > 0) {
-        const ret: Array<
-          | { type: "string"; idx: number; str: string }
-          | { type: "emoji"; idx: number; alt: string; url: string }
-        > = [];
+export interface Props {
+  str: string;
+}
 
-        if (parsedEmojis[0].indices[0] > 0) {
-          ret.push({
-            type: "string",
-            idx: 0,
-            str: this.str.substring(0, parsedEmojis[0].indices[0]),
-          });
-        }
+interface StringBlock {
+  type: "string";
+  idx: number;
+  str: string;
+}
+interface EmojiBlock {
+  type: "emoji";
+  idx: number;
+  alt: string;
+  url: string;
+}
 
-        for (let i = 0; i < parsedEmojis.length; i++) {
-          ret.push({
-            type: "emoji",
-            idx: parsedEmojis[i].indices[0],
-            url: parsedEmojis[i].url,
-            alt: parsedEmojis[i].text,
-          });
-          let nextIdx: number;
-          if (i == parsedEmojis.length - 1) {
-            nextIdx = this.str.length;
-          } else {
-            nextIdx = parsedEmojis[i + 1].indices[0];
-          }
-          if (parsedEmojis[i].indices[1] < nextIdx) {
-            ret.push({
-              type: "string",
-              idx: parsedEmojis[i].indices[1],
-              str: this.str.substring(parsedEmojis[i].indices[1], nextIdx),
-            });
-          }
-        }
-
-        return ret;
-      }
-
-      return [{ type: "string", idx: 0, str: this.str }];
-    },
-  },
-  methods: {
-    blockIdx(
-      block:
-        | { type: "string"; idx: number; str: string }
-        | { type: "emoji"; idx: number; alt: string; url: string }
-    ): string {
-      if (block.type == "string") {
-        return block.idx + "-" + block.str;
-      }
-      return block.idx + "-" + block.url;
-    },
-  },
+const props = withDefaults(defineProps<Props>(), {
+  str: () => "",
 });
+
+const parsedBlocks = computed((): Array<StringBlock | EmojiBlock> => {
+  const parsedEmojis = parse(props.str);
+  if (parsedEmojis.length > 0) {
+    const ret: Array<StringBlock | EmojiBlock> = [];
+
+    if (parsedEmojis[0].indices[0] > 0) {
+      ret.push({
+        type: "string",
+        idx: 0,
+        str: props.str.substring(0, parsedEmojis[0].indices[0]),
+      });
+    }
+
+    for (let i = 0; i < parsedEmojis.length; i++) {
+      ret.push({
+        type: "emoji",
+        idx: parsedEmojis[i].indices[0],
+        url: parsedEmojis[i].url,
+        alt: parsedEmojis[i].text,
+      });
+      let nextIdx: number;
+      if (i == parsedEmojis.length - 1) {
+        nextIdx = props.str.length;
+      } else {
+        nextIdx = parsedEmojis[i + 1].indices[0];
+      }
+      if (parsedEmojis[i].indices[1] < nextIdx) {
+        ret.push({
+          type: "string",
+          idx: parsedEmojis[i].indices[1],
+          str: props.str.substring(parsedEmojis[i].indices[1], nextIdx),
+        });
+      }
+    }
+
+    return ret;
+  }
+
+  return [{ type: "string", idx: 0, str: props.str }];
+});
+
+function blockIdx(block: StringBlock | EmojiBlock) {
+  if (block.type == "string") {
+    return block.idx + "-" + block.str;
+  }
+  return block.idx + "-" + block.url;
+}
 </script>
 
 <style scoped>

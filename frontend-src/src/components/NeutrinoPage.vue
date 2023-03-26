@@ -10,10 +10,10 @@
           />
           <h1>
             <span aria-hidden="true">&#8211;</span>
-            {{ $t("header-title") }}
+            {{ t("header-title") }}
             <span aria-hidden="true">&#8211;</span>
           </h1>
-          <h2>{{ $t("header-subtitle") }}</h2>
+          <h2>{{ t("header-subtitle") }}</h2>
         </header>
         <section class="neutrino-content">
           <NameSelector
@@ -45,7 +45,8 @@
 </template>
 
 <script setup lang="ts">
-import { defineProps, ref } from "vue";
+import { ref } from "vue";
+import { t } from "@/i18n";
 import LocaleChanger from "./LocaleChanger.vue";
 import NameSelector from "./NameSelector.vue";
 import PeerSelector from "./PeerSelector.vue";
@@ -54,12 +55,12 @@ import SecretExchange from "./SecretExchange.vue";
 import { KeyPairType } from "@/types";
 
 export interface Props {
-  keyPair: KeyPairType
+  keyPair: KeyPairType;
 }
 
-defineProps<Props>()
+defineProps<Props>();
 
-const currentComponent = ref("NameSelector")
+const currentComponent = ref("NameSelector");
 </script>
 
 <style scoped>

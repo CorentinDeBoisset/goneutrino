@@ -2,19 +2,19 @@
   <form @submit.prevent="register()" class="name-selector">
     <div class="name-selector__input-block">
       <div class="name-selector__input-label section-title">
-        {{ $t("name-selector__hello") }}
+        {{ t("name-selector__hello") }}
       </div>
       <div class="name-selector__input-label section-title">
-        {{ $t("name-selector__pick-nickname") }}
+        {{ t("name-selector__pick-nickname") }}
       </div>
       <input
         v-model="nickname"
-        :placeholder="$t('name-selector__nickname-placeholder')"
+        :placeholder="t('name-selector__nickname-placeholder')"
       />
     </div>
     <div class="name-selector__submit-block">
       <button class="btn" type="submit">
-        {{ $t("name-selector__submit-action") }}
+        {{ t("name-selector__submit-action") }}
       </button>
     </div>
     <div v-if="error.length > 0" class="name-selector__error-block">
@@ -25,8 +25,8 @@
 
 <script setup lang="ts">
 import { KeyPairType } from "@/types";
-import { ref, defineProps } from "vue";
-import { useI18n } from "vue-i18n";
+import { ref } from "vue";
+import { t } from "@/i18n";
 
 export interface Props {
   keyPair: KeyPairType;
@@ -38,7 +38,6 @@ const nickname = ref("");
 const error = ref("");
 
 const emit = defineEmits(["next"]);
-const { t } = useI18n();
 
 async function register() {
   if (nickname.value.length <= 0 || props.keyPair.publicKey == null) {

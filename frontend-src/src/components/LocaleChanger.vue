@@ -9,8 +9,8 @@
         @focus="focusList = true"
         @blur="focusList = false"
       >
-        <tw-emoji :str="localNames[$i18n.locale].emoji" />{{
-          localNames[$i18n.locale].name
+        <tw-emoji :str="getLocalProperties($i18n.locale).emoji" />{{
+          getLocalProperties($i18n.locale).name
         }}
         ▾
       </button>
@@ -26,8 +26,8 @@
             :key="`locale-${locale}`"
             @click="pickLocale(locale)"
           >
-            <tw-emoji :str="localNames[locale].emoji" />{{
-              localNames[locale].name
+            <tw-emoji :str="getLocalProperties(locale).emoji" />{{
+              getLocalProperties(locale).name
             }}
           </li>
         </ul>
@@ -36,36 +36,30 @@
   </form>
 </template>
 
-<script lang="ts">
-import { defineComponent } from "vue";
+<script setup lang="ts">
+import { ref } from "vue";
+import i18n from "@/i18n";
 
-export default defineComponent({
-  name: "LocaleChanger",
-  data() {
-    return {
-      localNames: {
-        en: {
-          emoji: "🇬🇧",
-          name: "En",
-        },
-        fr: {
-          emoji: "🇫🇷",
-          name: "Fr",
-        },
-      },
-      focusList: false,
-      hoverList: false,
-    };
-  },
-  methods: {
-    pickLocale(locale: string) {
-      this.$i18n.locale = locale;
-      this.focusList = false;
-      this.hoverList = false;
-      localStorage.setItem("locale", locale);
-    },
-  },
-});
+function getLocalProperties(loc: string): { emoji: string; name: string } {
+  switch (loc) {
+    case "en":
+      return { emoji: "🇬🇧", name: "En" };
+    case "fr":
+      return { emoji: "🇫🇷", name: "Fr" };
+    default:
+      return { emoji: "", name: "" };
+  }
+}
+
+const focusList = ref(false);
+const hoverList = ref(false);
+
+function pickLocale(newLocale: string) {
+  i18n.global.locale.value = newLocale;
+  hoverList.value = false;
+  focusList.value = false;
+  localStorage.setItem("locale", newLocale);
+}
 </script>
 
 <style scoped>
