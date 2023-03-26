@@ -26,19 +26,19 @@
 <script setup lang="ts">
 import { KeyPairType } from "@/types";
 import { ref, defineProps } from "vue";
-import { useI18n } from 'vue-i18n'
+import { useI18n } from "vue-i18n";
 
 export interface Props {
-  keyPair: KeyPairType
+  keyPair: KeyPairType;
 }
 
-const props = defineProps<Props>()
+const props = defineProps<Props>();
 
 const nickname = ref("");
-const error = ref("")
+const error = ref("");
 
-const emit = defineEmits(['next'])
-const { t } = useI18n()
+const emit = defineEmits(["next"]);
+const { t } = useI18n();
 
 async function register() {
   if (nickname.value.length <= 0 || props.keyPair.publicKey == null) {
@@ -46,7 +46,7 @@ async function register() {
     return;
   }
 
-  // Start the loader
+  // TODO: Start the loader
 
   await fetch("/api/v1/register", {
     method: "POST",

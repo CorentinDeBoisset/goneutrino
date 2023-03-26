@@ -48,8 +48,6 @@ func init() {
 		Use:   "serve",
 		Short: "Start a web server",
 		Run: func(cmd *cobra.Command, args []string) {
-			logger.InfoLog("Starting the server")
-
 			serverConfig, err := server.LoadConfig(confPath)
 			if err != nil {
 				logger.ErrorLog("The configuration could not be parsed: %v\n", err)

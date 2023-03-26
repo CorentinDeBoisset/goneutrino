@@ -16,31 +16,31 @@
 
 <script setup lang="ts">
 import { ref, reactive, onMounted } from "vue";
-import { useI18n } from 'vue-i18n'
+import { useI18n } from "vue-i18n";
 import SplashLogo from "./components/SplashLogo.vue";
 import NeutrinoPage from "./components/NeutrinoPage.vue";
 import { initKeys } from "./crypto";
 import { KeyPairType } from "@/types";
 
-const { t, locale, availableLocales } = useI18n()
+const { locale, availableLocales } = useI18n();
 
 const splashStatus = ref<string>("init");
-const glowSplash= ref<boolean>(false);
+const glowSplash = ref<boolean>(false);
 const keyPair: KeyPairType = reactive({ publicKey: null, privateKey: null });
 
 onMounted(async () => {
   splashStatus.value = "loading";
-    window.setTimeout(() => {
-      glowSplash.value = true;
-    }, 900);
-    window.setTimeout(() => {
-      splashStatus.value = "finished";
-    }, 3200);
+  window.setTimeout(() => {
+    glowSplash.value = true;
+  }, 900);
+  window.setTimeout(() => {
+    splashStatus.value = "finished";
+  }, 3200);
 
-    const newKeyPair = await initKeys()
-    keyPair.privateKey = newKeyPair.privateKey
-    keyPair.publicKey = newKeyPair.publicKey
-})
+  const newKeyPair = await initKeys();
+  keyPair.privateKey = newKeyPair.privateKey;
+  keyPair.publicKey = newKeyPair.publicKey;
+});
 
 const storedLocale = localStorage.getItem("locale");
 if (storedLocale != null && availableLocales.indexOf(storedLocale) !== -1) {

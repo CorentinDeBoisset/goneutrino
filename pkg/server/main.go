@@ -55,30 +55,12 @@ func StartServer(serverConfig *Config, debugMode bool) error {
 	apiv1.DecorateRouter(router)
 	// Next versions of the API should be added here
 
-	// Setup the server, with or without TLS
-	// certpool := x509.NewCertPool()
-
-	// router.SetTrustedProxies(serverConfig.TrustedProxies)
-	// proxyCa, err := common.LoadCertificateFromFile(serverConfig.ReverseProxyCa)
-	// if err != nil {
-	// 	return err
-	// }
-	// certpool.AddCert(proxyCa)
-
-	// tlsConfig := tls.Config{
-	// 	Certificates: []tls.Certificate{serverCert},
-	// 	ClientAuth:   tls.RequireAndVerifyClientCert,
-	// 	ClientCAs:    certpool,
-	// }
-
 	server := http.Server{
 		Addr:    fmt.Sprintf("%s:%d", serverConfig.Host, serverConfig.Port),
 		Handler: router,
-		// TLSConfig: &tlsConfig,
 	}
 
-	// TODO: replace with ListenAndServeTLS("", "") if we want to enable https between nginx and the golang
-
+	logger.InfoLog("Starting the server on http://%s:%d", serverConfig.Host, serverConfig.Port)
 	err := server.ListenAndServe()
 	if err != nil {
 		logger.ErrorLog("The server closed with the following status: %v", err)
