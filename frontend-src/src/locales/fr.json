@@ -17,7 +17,5 @@
 	"peer-validate__ok-action": "Les signatures correspondent →",
 	"api__generic_error": "Une erreur est survenue",
 	"api__invalid_pgpkey": "Une erreur de clé PGP est survenue",
-	"api__invalid_format": "Les données fournies ne sont pas conformes au format attendu par le serveur",
-	"api__unknown_fingerprint": "La clé PGP du serveur et celle du client ne correspondent pas",
-	"api__no_current_session": "Le client n'a pas de session valide"
+	"api__invalid_format": "Les données fournies ne sont pas conformes au format attendu par le serveur"
 }

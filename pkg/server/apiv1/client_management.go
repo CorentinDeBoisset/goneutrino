@@ -49,33 +49,12 @@ func registerClientRoute(c *gin.Context) {
 		return
 	}
 
-	c.SetCookie("neutrino-session", sessionId, 24*30*3600, "/", "localhost", true, true)
+	// TODO: make the cookie secure in production mode
+	c.SetCookie("neutrino-session", sessionId, 24*30*3600, "/", "", false, true)
 
-	// TODO: send the expiration date of the session to the JS
-	c.JSON(http.StatusOK, gin.H{"msg": "api__ok"})
-}
+	// This is a js-readable cookie to check if there is an existing session
+	c.SetCookie("neutrino-js-session", "", 24*30*3600, "/", "", false, false)
 
-func validateStatusRoute(c *gin.Context) {
-	client, found := c.Get("client")
-	if !found {
-		c.JSON(http.StatusUnauthorized, gin.H{"msg": "api__no_current_session"})
-		return
-	}
-	clientInstance := client.(*clientmgr.ClientInstance)
-	pkeyFingerprint := c.Query("fingerprint")
-	if !strings.EqualFold(pkeyFingerprint, clientInstance.PublicKey.PrimaryKey.KeyIdString()) {
-		// The supplied public key, and the stored one do not match,
-		// even though the client has the right session cookie.
-		// Given the inconsistency we return an error and clear everything
-		store := c.MustGet("client-store").(*clientmgr.ClientStore)
-		_ = store.RemoveClient(c.GetString("client-uuid"))
-		c.SetCookie("neutrino-session", "", -1, "/", "localhost", true, true)
-
-		c.JSON(http.StatusUnauthorized, gin.H{"msg": "api__unknown_fingerprint"})
-		return
-	}
-
-	// TODO: send the expiration of the session to the JS
 	c.JSON(http.StatusOK, gin.H{"msg": "api__ok"})
 }
 

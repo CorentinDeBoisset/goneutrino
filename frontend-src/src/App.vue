@@ -37,9 +37,10 @@ onMounted(async () => {
     splashStatus.value = "finished";
   }, 3200);
 
-  const newKeyPair = await initKeys();
-  keyPair.privateKey = newKeyPair.privateKey;
-  keyPair.publicKey = newKeyPair.publicKey;
+  const initKeyPair = await initKeys();
+
+  keyPair.privateKey = initKeyPair.privateKey;
+  keyPair.publicKey = initKeyPair.publicKey;
 });
 
 const storedLocale = localStorage.getItem("locale");

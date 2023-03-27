@@ -33,21 +33,9 @@ func LoadConfig(configPath string) (*Config, error) {
 		serverConfig.Host = "127.0.0.1"
 	}
 
-	// if serverConfig.TlsBehindProxy {
 	if serverConfig.TrustedProxies == nil {
 		return nil, fmt.Errorf("invalid value for config property \"trusted_proxies\"")
 	}
-	// 	if len(serverConfig.ReverseProxyCa) == 0 {
-	// 		return nil, errors.New("invalid value for config property \"tls_ca\"")
-	// 	}
-	// }
-
-	// if len(serverConfig.TlsKey) == 0 {
-	// 	return nil, errors.New("invalid value for config property \"tls_key\"")
-	// }
-	// if len(serverConfig.TlsCert) == 0 {
-	// 	return nil, errors.New("invalid value for config property \"tls_cert\"")
-	// }
 
 	return serverConfig, nil
 }

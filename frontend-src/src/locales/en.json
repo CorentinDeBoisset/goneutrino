@@ -17,7 +17,5 @@
 	"peer-validate__ok-action": "The fingerprints match →",
 	"api__generic_error": "An error has occured",
 	"api__invalid_pgpkey": "There was an error with the PGP key",
-	"api__invalid_format": "The submitted data did not respect the format expected by the server",
-	"api__unknown_fingerprint": "The PGP key in the server and the client do not match",
-	"api__no_current_session": "The client does not have a valid session"
+	"api__invalid_format": "The submitted data did not respect the format expected by the server"
 }

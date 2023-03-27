@@ -1,6 +1,7 @@
 package server
 
 import (
+	"net/http"
 	"time"
 
 	"github.com/corentindeboisset/neutrino/pkg/clientmgr"
@@ -21,6 +22,7 @@ func clientMgmtMiddleware() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		// Attach the store to the context
 		c.Set("client-store", store)
+		c.SetSameSite(http.SameSiteStrictMode)
 
 		sessionId, err := c.Cookie("neutrino-session")
 		if err != nil {
@@ -31,7 +33,6 @@ func clientMgmtMiddleware() gin.HandlerFunc {
 
 		client, err := store.GetClient(sessionId)
 		if err != nil {
-			c.SetCookie("neutrino-session", "", -1, "/", "localhost", true, true)
 			c.Next()
 			return
 		}

@@ -12,12 +12,10 @@ import (
 )
 
 func sendStringRoute(c *gin.Context) {
-	rawCurrentClient, found := c.Get("client")
-	if !found {
-		c.JSON(http.StatusUnauthorized, gin.H{"msg": "api__unauthorized"})
+	senderClient, err := authenticate(c)
+	if err != nil {
 		return
 	}
-	curClient := rawCurrentClient.(*clientmgr.ClientInstance)
 
 	destId, err := strconv.Atoi(c.Query("destination-id"))
 	if err != nil {
@@ -39,7 +37,7 @@ func sendStringRoute(c *gin.Context) {
 	}
 
 	transferStore := c.MustGet("transfer-store").(*transfermgr.TransferStore)
-	newTransfer, err := transferStore.NewStringTransfer(curClient.Id, destClient.Id, secret)
+	newTransfer, err := transferStore.NewStringTransfer(senderClient.Id, destClient.Id, secret)
 	if err != nil {
 		logger.ErrorLog("An error occured when creating and saving the transfer: %s", err.Error())
 		c.JSON(http.StatusInternalServerError, gin.H{"msg": "api__generic_error"})
@@ -53,17 +51,15 @@ func sendStringRoute(c *gin.Context) {
 }
 
 func getStringRoute(c *gin.Context) {
-	transferStore := c.MustGet("transfer-store").(*transfermgr.TransferStore)
-	rawCurrentClient, found := c.Get("client")
-	if !found {
-		c.JSON(http.StatusUnauthorized, gin.H{"msg": "api__unauthorized"})
+	senderClient, err := authenticate(c)
+	if err != nil {
 		return
 	}
-	curClient := rawCurrentClient.(*clientmgr.ClientInstance)
 
+	transferStore := c.MustGet("transfer-store").(*transfermgr.TransferStore)
 	transferId := c.Query("transfer-id")
 	transfer, err := transferStore.GetTransfer(transferId)
-	if err != nil || transfer.To != curClient.Id {
+	if err != nil || transfer.To != senderClient.Id {
 		c.JSON(http.StatusNotFound, gin.H{"msg": "api__transfer_not_found"}) // "There are no transfer with this identifier"
 		return
 	}
@@ -72,12 +68,10 @@ func getStringRoute(c *gin.Context) {
 }
 
 func sendFileRoute(c *gin.Context) {
-	rawCurrentClient, found := c.Get("client")
-	if !found {
-		c.JSON(http.StatusUnauthorized, gin.H{"msg": "api__unauthorized"})
+	senderClient, err := authenticate(c)
+	if err != nil {
 		return
 	}
-	curClient := rawCurrentClient.(*clientmgr.ClientInstance)
 
 	destId, err := strconv.Atoi(c.Query("destination-id"))
 	if err != nil {
@@ -99,7 +93,7 @@ func sendFileRoute(c *gin.Context) {
 	}
 
 	transferStore := c.MustGet("transfer-store").(*transfermgr.TransferStore)
-	newTransfer, err := transferStore.NewFileTransfer(curClient.Id, destClient.Id, fileHeader)
+	newTransfer, err := transferStore.NewFileTransfer(senderClient.Id, destClient.Id, fileHeader)
 	if err != nil {
 		logger.ErrorLog("An error occured when creating and saving the transfer: %s", err.Error())
 		c.JSON(http.StatusInternalServerError, gin.H{"msg": "api__generic_error"})
@@ -113,17 +107,15 @@ func sendFileRoute(c *gin.Context) {
 }
 
 func getFileRoute(c *gin.Context) {
-	transferStore := c.MustGet("transfer-store").(*transfermgr.TransferStore)
-	rawCurrentClient, found := c.Get("client")
-	if !found {
-		c.JSON(http.StatusUnauthorized, gin.H{"msg": "api__unauthorized"})
+	senderClient, err := authenticate(c)
+	if err != nil {
 		return
 	}
-	curClient := rawCurrentClient.(*clientmgr.ClientInstance)
 
+	transferStore := c.MustGet("transfer-store").(*transfermgr.TransferStore)
 	transferId := c.Query("transfer-id")
 	transfer, err := transferStore.GetTransfer(transferId)
-	if err != nil || transfer.To != curClient.Id {
+	if err != nil || transfer.To != senderClient.Id {
 		c.JSON(http.StatusNotFound, gin.H{"msg": "api__transfer_not_found"})
 		return
 	}

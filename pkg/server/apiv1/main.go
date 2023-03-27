@@ -9,7 +9,6 @@ func DecorateRouter(r *gin.Engine) {
 
 	groupV1.GET("/ping", pingRoute)
 	groupV1.POST("/register", registerClientRoute)
-	groupV1.GET("/validate-status", validateStatusRoute)
 	groupV1.GET("/public-key", getPublicKeyRoute)
 
 	groupV1.GET("/SSE", eventPusherRoute)
