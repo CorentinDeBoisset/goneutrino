@@ -55,7 +55,16 @@ func registerClientRoute(c *gin.Context) {
 	// This is a js-readable cookie to check if there is an existing session
 	c.SetCookie("neutrino-js-session", "", 24*30*3600, "/", "", false, false)
 
-	c.JSON(http.StatusOK, gin.H{"msg": "api__ok"})
+	// Check the client
+	client, err := store.GetClient(sessionId)
+	if err != nil {
+		// This should never happen...
+		logger.ErrorLog("Failed to find the client just after it was registered")
+		c.JSON(http.StatusInternalServerError, gin.H{"msg": "api__generic_error"})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"msg": "api__ok", "payload": gin.H{"id": client.Id}})
 }
 
 func getPublicKeyRoute(c *gin.Context) {

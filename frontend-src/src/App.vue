@@ -8,27 +8,23 @@
     />
     <NeutrinoPage
       class="fullheight"
-      :key-pair="keyPair"
       v-else-if="splashStatus === 'finished'"
     />
   </transition>
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, onMounted } from "vue";
+import { ref, onMounted } from "vue";
 import SplashLogo from "./components/SplashLogo.vue";
 import NeutrinoPage from "./components/NeutrinoPage.vue";
-import { initKeys } from "./crypto";
-import { KeyPairType } from "@/types";
 import i18n from "@/i18n";
 
 const t = i18n.global.t;
 
 const splashStatus = ref<string>("init");
 const glowSplash = ref<boolean>(false);
-const keyPair: KeyPairType = reactive({ publicKey: null, privateKey: null });
 
-onMounted(async () => {
+onMounted(() => {
   splashStatus.value = "loading";
   window.setTimeout(() => {
     glowSplash.value = true;
@@ -36,11 +32,6 @@ onMounted(async () => {
   window.setTimeout(() => {
     splashStatus.value = "finished";
   }, 3200);
-
-  const initKeyPair = await initKeys();
-
-  keyPair.privateKey = initKeyPair.privateKey;
-  keyPair.publicKey = initKeyPair.publicKey;
 });
 
 const storedLocale = localStorage.getItem("locale");

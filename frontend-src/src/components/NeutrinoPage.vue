@@ -19,9 +19,11 @@
           <NameSelector
             v-if="currentComponent === 'NameSelector'"
             :keyPair="keyPair"
-            @next="currentComponent = 'PeerSelector'"
+            @next="onNameValidation"
           />
           <PeerSelector
+            :id="id"
+            :nickname="nickname"
             v-else-if="currentComponent === 'PeerSelector'"
             @cancel="currentComponent = 'NameSelector'"
             @next="currentComponent = 'PeerValidator'"
@@ -45,22 +47,38 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
+import { ref, reactive, onMounted } from "vue";
 import { t } from "@/i18n";
+import { loadSession } from "@/init_session";
+import { KeyPairType } from "@/types";
 import LocaleChanger from "./LocaleChanger.vue";
 import NameSelector from "./NameSelector.vue";
 import PeerSelector from "./PeerSelector.vue";
 import PeerValidator from "./PeerValidator.vue";
 import SecretExchange from "./SecretExchange.vue";
-import { KeyPairType } from "@/types";
 
-export interface Props {
-  keyPair: KeyPairType;
-}
+const nickname = ref<string|null>(null);
+const id = ref<null|int>(null);
+const keyPair: KeyPairType = reactive({ publicKey: null, privateKey: null });
 
-defineProps<Props>();
+onMounted(async () => {
+  const initKeyPair = await loadSession();
+
+  keyPair.privateKey = initKeyPair.keyPair.privateKey;
+  keyPair.publicKey = initKeyPair.keyPair.publicKey;
+  nickname.value = initKeyPair.nickname;
+  if (nickname.value != "" && nickname.value != null) {
+    currentComponent.value = "PeerSelector";
+  }
+});
 
 const currentComponent = ref("NameSelector");
+
+function onNameValidation(payload: any, event: any) {
+  currentComponent.value = 'PeerSelector'
+  nickname.value =  payload.nickname;
+  id.value = payload.id;
+}
 </script>
 
 <style scoped>

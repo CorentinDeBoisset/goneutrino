@@ -64,8 +64,9 @@ async function register() {
       }
       return res.json();
     })
-    .then(() => {
-      emit("next", { nickname });
+    .then(resJson => {
+      localStorage.setItem("neutrino-nickname", nickname.value);
+      emit("next", { nickname: nickname.value, id: resJson.payload.id });
     })
     .catch((err) => {
       error.value = t(err.msg);
