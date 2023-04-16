@@ -8,12 +8,21 @@
         {{ t("name-selector__pick-nickname") }}
       </div>
       <input
+        class="col-6"
+        type="text"
         v-model="nickname"
         :placeholder="t('name-selector__nickname-placeholder')"
       />
     </div>
     <div class="name-selector__submit-block">
-      <button class="btn" type="submit">
+      <button
+        class="btn"
+        :class="{
+          'inactive': !nickname || nickname.length == 0,
+          'loading': loading,
+        }"
+        type="submit"
+      >
         {{ t("name-selector__submit-action") }}
       </button>
     </div>
@@ -36,6 +45,7 @@ const props = defineProps<Props>();
 
 const nickname = ref("");
 const error = ref("");
+const loading = ref(false);
 
 const emit = defineEmits(["next"]);
 
@@ -45,7 +55,7 @@ async function register() {
     return;
   }
 
-  // TODO: Start the loader
+  loading.value = true;
 
   await fetch("/api/v1/register", {
     method: "POST",
@@ -70,19 +80,28 @@ async function register() {
     })
     .catch((err) => {
       error.value = t(err.msg);
+    }).finally(() => {
+      loading.value = false;
     });
 }
 </script>
 
 <style scoped>
 .name-selector {
-  margin: 0.5rem;
+  margin: 1rem;
 }
 
 .name-selector__input-label {
   font-size: 1.5rem;
   line-height: 1.8rem;
   text-align: left;
+}
+
+.name-selector__input-block {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
 }
 
 .name-selector__input-block input {
