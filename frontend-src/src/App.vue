@@ -27,13 +27,9 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from "vue";
 import i18n from "@/i18n";
-import { useNeutrinoStore } from '@/appStore'
-import { t } from "@/i18n";
 import LocaleChanger from "./components/LocaleChanger.vue";
-
-const store = useNeutrinoStore();
+import { t } from "@/i18n";
 
 const storedLocale = localStorage.getItem("locale");
 if (
@@ -53,10 +49,6 @@ if (
     i18n.global.locale.value = browserLocale[0];
   }
 }
-
-onMounted(async () => {
-  store.initializeData();
-});
 </script>
 
 <style scoped>

@@ -15,25 +15,33 @@ function getCookie(cookieName: string): string | undefined {
 
 export const useNeutrinoStore = defineStore('neutrino', {
   state: () => ({
-    id: null as string | null,
+    userId: null as string | null,
     nickname: null as string | null,
     keyPair: {
       publicKey: null,
       privateKey: null,
     } as KeyPairType,
-    initializationError: null as string | null,
+    initError: null as string | null,
+    initHasRun: false,
   }),
 
   actions: {
     async initializeData() {
+      // The method can only run once
+      if (this.initHasRun) {
+        return
+      }
+      this.initHasRun = true;
+
       const sessionCookie = getCookie("neutrino-js-cookie");
       if (sessionCookie !== undefined) {
         // There is a session, we extract the keypair from local storage
         const rawPrivateKey = localStorage.getItem("neutrino-private-key");
         const rawPublicKey = localStorage.getItem("neutrino-public-key");
         const nickname = localStorage.getItem("neutrino-nickname");
+        const userId = localStorage.getItem("neutrino-user-id");
 
-        if (nickname != null && rawPrivateKey !== null && rawPublicKey !== null) {
+        if (userId != null && nickname != null && rawPrivateKey !== null && rawPublicKey !== null) {
           try {
             const privateKey = await readPrivateKey({ armoredKey: rawPrivateKey });
             const publicKey = await readKey({ armoredKey: rawPublicKey });
@@ -45,7 +53,7 @@ export const useNeutrinoStore = defineStore('neutrino', {
               console.log(
                 "A key pair was found in the local storage, and is still valid"
               );
-              this.id = "";
+              this.userId = userId;
               this.nickname = nickname;
               this.keyPair = { publicKey, privateKey };
               return;
@@ -73,15 +81,14 @@ export const useNeutrinoStore = defineStore('neutrino', {
         localStorage.setItem("neutrino-private-key", keyPair.privateKey);
         localStorage.setItem("neutrino-public-key", keyPair.publicKey);
 
-
-        this.id = "";
-        this.nickname = "";
+        this.userId = null;
+        this.nickname = null;
         this.keyPair = { publicKey, privateKey };
         return
       } catch (e) {
         const errMsg = "The PGP key pair could not be generated: " + String(e)
         console.warn("Initialization error: " + errMsg)
-        this.initializationError = errMsg
+        this.initError = errMsg
       }
     },
 
