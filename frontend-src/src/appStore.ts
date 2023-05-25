@@ -15,7 +15,6 @@ function getCookie(cookieName: string): string | undefined {
 
 export const useNeutrinoStore = defineStore('neutrino', {
   state: () => ({
-    userId: null as string | null,
     nickname: null as string | null,
     keyPair: {
       publicKey: null,
@@ -39,9 +38,8 @@ export const useNeutrinoStore = defineStore('neutrino', {
         const rawPrivateKey = localStorage.getItem("neutrino-private-key");
         const rawPublicKey = localStorage.getItem("neutrino-public-key");
         const nickname = localStorage.getItem("neutrino-nickname");
-        const userId = localStorage.getItem("neutrino-user-id");
 
-        if (userId != null && nickname != null && rawPrivateKey !== null && rawPublicKey !== null) {
+        if (nickname != null && rawPrivateKey !== null && rawPublicKey !== null) {
           try {
             const privateKey = await readPrivateKey({ armoredKey: rawPrivateKey });
             const publicKey = await readKey({ armoredKey: rawPublicKey });
@@ -53,7 +51,6 @@ export const useNeutrinoStore = defineStore('neutrino', {
               console.log(
                 "A key pair was found in the local storage, and is still valid"
               );
-              this.userId = userId;
               this.nickname = nickname;
               this.keyPair = { publicKey, privateKey };
               return;
@@ -81,7 +78,6 @@ export const useNeutrinoStore = defineStore('neutrino', {
         localStorage.setItem("neutrino-private-key", keyPair.privateKey);
         localStorage.setItem("neutrino-public-key", keyPair.publicKey);
 
-        this.userId = null;
         this.nickname = null;
         this.keyPair = { publicKey, privateKey };
         return
@@ -92,8 +88,9 @@ export const useNeutrinoStore = defineStore('neutrino', {
       }
     },
 
-    setName(newNickname: string) {
+    setNickname(newNickname: string) {
       this.nickname = newNickname;
+      localStorage.setItem("neutrino-nickname", newNickname);
     },
   }
 })

@@ -13,7 +13,7 @@ const routes: Array<RouteRecordRaw> = [
     meta: { initState: "unregistered" }
   },
   {
-    name: 'chatInit',
+    name: 'new-chat',
     path: '/new-chat',
     component: PeerSelector,
     meta: { initState: "registered" }
@@ -49,11 +49,11 @@ router.beforeResolve(async (to): Promise<boolean|RouteLocationRaw> => {
     }
 
     // Then we redirect if the user is not registered yet
-    if (to.meta.initState == "registered" && store.userId === null) {
+    if (to.meta.initState == "registered" && store.nickname === null) {
       console.warn("Access to a page requiring a registered session was cancelled.")
       return { name: 'home' };
-    } else if (to.meta.initState == "unregistered" && store.userId !== null) {
-      return { name: 'chatInit' };
+    } else if (to.meta.initState == "unregistered" && store.nickname !== null) {
+      return { name: 'new-chat' };
     }
   }
   return true

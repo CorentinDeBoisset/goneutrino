@@ -18,7 +18,7 @@
       <button
         class="btn"
         :class="{
-          'inactive': !nickname || nickname.length == 0,
+          'inactive': nickname.length == 0,
           'loading': loading,
         }"
         type="submit"
@@ -33,25 +33,21 @@
 </template>
 
 <script setup lang="ts">
-import { KeyPairType } from "@/types";
 import { ref } from "vue";
 import { t } from "@/i18n";
+import { useRouter } from 'vue-router'
+import { useNeutrinoStore } from "@/appStore";
 
-export interface Props {
-  keyPair: KeyPairType;
-}
-
-const props = defineProps<Props>();
+const router = useRouter();
+const store = useNeutrinoStore();
 
 const nickname = ref("");
-const error = ref("");
 const loading = ref(false);
-
-const emit = defineEmits(["next"]);
+const error = ref("");
 
 async function register() {
-  if (nickname.value.length <= 0 || props.keyPair.publicKey == null) {
-    // TODO: show why we cannot validate?
+  if (nickname.value.length <= 0 || store.keyPair.publicKey === null) {
+    // TODO: show why we cannot validate
     return;
   }
 
@@ -62,7 +58,7 @@ async function register() {
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
       Name: nickname.value,
-      PublicKey: props.keyPair.publicKey.armor(),
+      PublicKey: store.keyPair.publicKey.armor(),
     }),
   })
     .then((res) => {
@@ -74,9 +70,9 @@ async function register() {
       }
       return res.json();
     })
-    .then(resJson => {
-      localStorage.setItem("neutrino-nickname", nickname.value);
-      emit("next", { nickname: nickname.value, id: resJson.payload.id });
+    .then(() => {
+      store.setNickname(nickname.value)
+      router.replace({ name: 'new-chat' });
     })
     .catch((err) => {
       error.value = t(err.msg);
