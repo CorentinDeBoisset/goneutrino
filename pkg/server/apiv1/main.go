@@ -8,8 +8,12 @@ func DecorateRouter(r *gin.Engine) {
 	groupV1 := r.Group("/api/v1")
 
 	groupV1.GET("/ping", pingRoute)
+
 	groupV1.POST("/register", registerClientRoute)
-	groupV1.GET("/public-key", getPublicKeyRoute)
+
+	groupV1.POST("/new-chat", createNewChatRoute)
+	groupV1.POST("/join-chat", joinChatRoute)
+	groupV1.GET("/chat-peers", getChatPeersRoute)
 
 	groupV1.GET("/SSE", eventPusherRoute)
 

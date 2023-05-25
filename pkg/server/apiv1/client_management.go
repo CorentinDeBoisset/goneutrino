@@ -2,7 +2,6 @@ package apiv1
 
 import (
 	"net/http"
-	"strconv"
 	"strings"
 	"time"
 
@@ -67,49 +66,50 @@ func registerClientRoute(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"msg": "api__ok", "payload": gin.H{"id": client.Id}})
 }
 
-func getPublicKeyRoute(c *gin.Context) {
-	rawClient, found := c.Get("client")
-	if !found {
-		c.JSON(http.StatusUnauthorized, gin.H{"msg": "api__unauthorized"})
-		return
-	}
-	client := rawClient.(clientmgr.ClientInstance)
+// FIXME: remove this route
+// func getPublicKeyRoute(c *gin.Context) {
+// 	rawClient, found := c.Get("client")
+// 	if !found {
+// 		c.JSON(http.StatusUnauthorized, gin.H{"msg": "api__unauthorized"})
+// 		return
+// 	}
+// 	client := rawClient.(clientmgr.ClientInstance)
 
-	clientId, err := strconv.Atoi(c.Query("id"))
-	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"msg": "api__invalid_format", "error": "The supplied value for `id` is not an integer"})
-		return
-	}
-	initiate, err := strconv.ParseBool(c.DefaultQuery("initiate", "false"))
-	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"msg": "api__invalid_format", "error": "the supplied value for `initiate` is not a valid boolean"})
-	}
+// 	clientId, err := strconv.Atoi(c.Query("id"))
+// 	if err != nil {
+// 		c.JSON(http.StatusBadRequest, gin.H{"msg": "api__invalid_format", "error": "The supplied value for `id` is not an integer"})
+// 		return
+// 	}
+// 	initiate, err := strconv.ParseBool(c.DefaultQuery("initiate", "false"))
+// 	if err != nil {
+// 		c.JSON(http.StatusBadRequest, gin.H{"msg": "api__invalid_format", "error": "the supplied value for `initiate` is not a valid boolean"})
+// 	}
 
-	store := c.MustGet("client-store").(*clientmgr.ClientStore)
-	peerClient, err := store.GetClientFromId(clientId)
-	if err != nil {
-		c.JSON(http.StatusNotFound, gin.H{"msg": "api__unknown_peer", "error": "the supplied id could not be associated with another client"})
-		return
-	}
+// 	store := c.MustGet("client-store").(*clientmgr.ClientStore)
+// 	peerClient, err := store.GetClientFromId(clientId)
+// 	if err != nil {
+// 		c.JSON(http.StatusNotFound, gin.H{"msg": "api__unknown_peer", "error": "the supplied id could not be associated with another client"})
+// 		return
+// 	}
 
-	if !peerClient.IsOnline() {
-		c.JSON(http.StatusNotFound, gin.H{"msg": "api__peer_offline", "error": "A client with the given id was found, but is not online"})
-		return
-	}
+// 	if !peerClient.IsOnline() {
+// 		c.JSON(http.StatusNotFound, gin.H{"msg": "api__peer_offline", "error": "A client with the given id was found, but is not online"})
+// 		return
+// 	}
 
-	pubKey, err := peerClient.SerializePubKey()
-	if err != nil {
-		logger.ErrorLog("failed to serialize the public key of a client (id=%d): %s", clientId, err.Error())
-		c.JSON(http.StatusInternalServerError, gin.H{"msg": "api__generic_error"})
-		return
-	}
+// 	pubKey, err := peerClient.SerializePubKey()
+// 	if err != nil {
+// 		logger.ErrorLog("failed to serialize the public key of a client (id=%d): %s", clientId, err.Error())
+// 		c.JSON(http.StatusInternalServerError, gin.H{"msg": "api__generic_error"})
+// 		return
+// 	}
 
-	if initiate {
-		// This call may be blocking, not sure if it should be put in a specific goroutine...
-		// In that case, there may be too many goroutines started
-		// Alternatively, we could use a buffered channel and a non-blocking send, and handle the error if many other clients are trying to connect to the peer
-		peerClient.NewPeers <- client.Id
-	}
+// 	if initiate {
+// 		// This call may be blocking, not sure if it should be put in a specific goroutine...
+// 		// In that case, there may be too many goroutines started
+// 		// Alternatively, we could use a buffered channel and a non-blocking send, and handle the error if many other clients are trying to connect to the peer
+// 		peerClient.NewPeers <- client.Id
+// 	}
 
-	c.JSON(http.StatusOK, gin.H{"msg": "api__ok", "publicKey": pubKey})
-}
+// 	c.JSON(http.StatusOK, gin.H{"msg": "api__ok", "publicKey": pubKey})
+// }
