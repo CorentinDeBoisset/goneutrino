@@ -1,20 +1,20 @@
 <template>
-  <form @submit.prevent="register()" class="name-selector">
-    <div class="name-selector__input-block">
-      <div class="name-selector__input-label section-title">
-        {{ t("name-selector__hello") }}
+  <form @submit.prevent="register()" class="home-page">
+    <div class="home-page__input-block">
+      <div class="home-page__input-label section-title">
+        {{ t("home-page__hello") }}
       </div>
-      <div class="name-selector__input-label section-title">
-        {{ t("name-selector__pick-nickname") }}
+      <div class="home-page__input-label section-title">
+        {{ t("home-page__pick-nickname") }}
       </div>
       <input
         class="col-6"
         type="text"
         v-model="nickname"
-        :placeholder="t('name-selector__nickname-placeholder')"
+        :placeholder="t('home-page__nickname-placeholder')"
       />
     </div>
-    <div class="name-selector__submit-block">
+    <div class="home-page__submit-block">
       <button
         class="btn"
         :class="{
@@ -23,10 +23,10 @@
         }"
         type="submit"
       >
-        {{ t("name-selector__submit-action") }}
+        {{ t("home-page__submit-action") }}
       </button>
     </div>
-    <div v-if="error.length > 0" class="name-selector__error-block">
+    <div v-if="error.length > 0" class="home-page__error-block">
       {{ error }}
     </div>
   </form>
@@ -87,33 +87,33 @@ async function register() {
 </script>
 
 <style scoped>
-.name-selector {
+.home-page {
   margin: 1rem;
 }
 
-.name-selector__input-label {
+.home-page__input-label {
   font-size: 1.5rem;
   line-height: 1.8rem;
   text-align: left;
 }
 
-.name-selector__input-block {
+.home-page__input-block {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   justify-content: center;
 }
 
-.name-selector__input-block input {
+.home-page__input-block input {
   margin: 1rem 0 2rem;
 }
 
-.name-selector__submit-block {
+.home-page__submit-block {
   text-align: right;
   margin: 2rem 0 0;
 }
 
-.name-selector__error-block {
+.home-page__error-block {
   color: #d94f04;
   margin: 1rem 0 0.5rem;
   text-align: center;
