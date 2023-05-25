@@ -32,7 +32,7 @@ export const useNeutrinoStore = defineStore('neutrino', {
       }
       this.initHasRun = true;
 
-      const sessionCookie = getCookie("neutrino-js-cookie");
+      const sessionCookie = getCookie("neutrino-js-session");
       if (sessionCookie !== undefined) {
         // There is a session, we extract the keypair from local storage
         const rawPrivateKey = localStorage.getItem("neutrino-private-key");

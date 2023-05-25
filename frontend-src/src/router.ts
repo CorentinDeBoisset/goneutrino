@@ -1,7 +1,7 @@
 import { createRouter, createWebHistory, RouteLocationRaw, RouteRecordRaw  } from 'vue-router';
 import { useNeutrinoStore } from './appStore';
 import HomePage from '@/components/HomePage.vue'
-import PeerSelector from '@/components/PeerSelector.vue'
+import NewChatPage from '@/components/NewChatPage.vue'
 import SecretExchange from '@/components/SecretExchange.vue'
 import ErrorPage from '@/components/ErrorPage.vue'
 
@@ -15,7 +15,7 @@ const routes: Array<RouteRecordRaw> = [
   {
     name: 'new-chat',
     path: '/new-chat',
-    component: PeerSelector,
+    component: NewChatPage,
     meta: { initState: "registered" }
   },
   {
