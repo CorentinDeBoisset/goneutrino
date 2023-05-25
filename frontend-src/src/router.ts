@@ -1,7 +1,6 @@
 import { createRouter, createWebHistory, RouteLocationRaw, RouteRecordRaw  } from 'vue-router';
 import { useNeutrinoStore } from './appStore';
 import HomePage from '@/components/HomePage.vue'
-import NameSelector from '@/components/NameSelector.vue'
 import PeerSelector from '@/components/PeerSelector.vue'
 import SecretExchange from '@/components/SecretExchange.vue'
 import ErrorPage from '@/components/ErrorPage.vue'
@@ -10,7 +9,7 @@ const routes: Array<RouteRecordRaw> = [
   {
     name: 'home',
     path: '/',
-    component: NameSelector,
+    component: HomePage,
     meta: { initState: "unregistered" }
   },
   {
