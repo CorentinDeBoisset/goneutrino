@@ -54,10 +54,8 @@ if (
   }
 }
 
-let initalization: Promise<void>;
-
 onMounted(async () => {
-  initalization = store.initializeData();
+  store.initializeData();
 });
 </script>
 

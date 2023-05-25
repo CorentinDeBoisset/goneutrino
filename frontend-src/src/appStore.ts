@@ -2,7 +2,7 @@ import { defineStore } from 'pinia'
 import { generateKey, readKey, readPrivateKey } from "openpgp";
 import { KeyPairType } from "@/types";
 
-function getCookie(cookieName: string): string|undefined {
+function getCookie(cookieName: string): string | undefined {
   const value = `; ${document.cookie}`;
   const parts = value.split(`; ${cookieName}=`);
   if (parts.length === 2) {
@@ -15,12 +15,13 @@ function getCookie(cookieName: string): string|undefined {
 
 export const useNeutrinoStore = defineStore('neutrino', {
   state: () => ({
-    id: "",
-    nickname: "",
+    id: null as string | null,
+    nickname: null as string | null,
     keyPair: {
       publicKey: null,
       privateKey: null,
     } as KeyPairType,
+    initializationError: null as string | null,
   }),
 
   actions: {
@@ -50,9 +51,7 @@ export const useNeutrinoStore = defineStore('neutrino', {
               return;
             }
           } catch (e) {
-            console.warn(
-              "A key pair was found in the local storage but is not valid. It has been discarded."
-            );
+            console.warn("A key pair was found in the local storage but is not valid. It has been discarded.");
           }
         }
       }
@@ -80,7 +79,9 @@ export const useNeutrinoStore = defineStore('neutrino', {
         this.keyPair = { publicKey, privateKey };
         return
       } catch (e) {
-        throw new Error("The PGP key pair could not be generated: " + String(e));
+        const errMsg = "The PGP key pair could not be generated: " + String(e)
+        console.warn("Initialization error: " + errMsg)
+        this.initializationError = errMsg
       }
     },
 
