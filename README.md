@@ -40,7 +40,7 @@ Then you can build the backend:
 Finally, you can install and start the frontend web server:
 
     cd frontend-src
-    npm Install
+    npm install
     npm run serve
 
 The application is then available at [http://localhost:8080]
